@@ -141,41 +141,44 @@ notifications, users, orders, or administration in the initial version.
 
 # 3. Repository Structure
 
-Use a monorepo.
+Use separate Git repositories for the frontend and backend. The existing
+documentation repository remains separate. They may be checked out side by
+side in one local workspace; the workspace directory is not itself a Git
+repository.
 
 ``` text
-cleanzza/
-├── apps/
-│   ├── web/
-│   │   ├── app/
-│   │   ├── components/
-│   │   ├── lib/
-│   │   ├── hooks/
-│   │   ├── types/
-│   │   └── tests/
-│   │
-│   └── api/
-│       ├── app/
-│       │   ├── api/
-│       │   ├── core/
-│       │   ├── db/
-│       │   ├── modules/
-│       │   ├── integrations/
-│       │   └── workers/
-│       └── tests/
-│
-├── docs/
-│   └── adr/
-├── infra/
-├── docker-compose.yml
-├── .env.example
-└── README.md
+Cleanzza/                 local workspace, not a Git repository
+├── front/                frontend Git repository (Next.js)
+│   ├── app/
+│   ├── components/
+│   ├── lib/
+│   ├── hooks/
+│   ├── types/
+│   ├── tests/
+│   ├── .env.example
+│   └── README.md
+├── back/                 backend Git repository (FastAPI)
+│   ├── app/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── db/
+│   │   ├── modules/
+│   │   ├── integrations/
+│   │   └── workers/
+│   ├── tests/
+│   ├── infra/
+│   ├── docker-compose.yml
+│   ├── .env.example
+│   └── README.md
+└── docs/                 documentation Git repository
+    ├── adr/
+    └── README.md
 ```
 
 Backend modules:
 
 ``` text
-apps/api/app/modules/
+back/app/modules/
 ├── auth/
 ├── users/
 ├── customers/
@@ -251,7 +254,7 @@ errors, and observability; business concepts stay in their owning module.
 Next.js is the presentation layer.
 
 ``` text
-apps/web/
+front/
 ├── app/
 │   ├── (marketing)/
 │   ├── auth/
@@ -1449,7 +1452,11 @@ Exact endpoint naming may evolve, but maintain consistent
 resource-oriented REST semantics.
 
 Publish an OpenAPI contract and generate or validate the TypeScript API client
-from it. Choose and document an API versioning strategy before the first public
+from it. FastAPI routes and Pydantic schemas are the source of truth. Export a
+versioned OpenAPI artifact from the backend repository; the frontend repository
+pins a compatible artifact or generated client and checks it in CI. Coordinate
+breaking changes so either repository can deploy without requiring a simultaneous
+release. Choose and document an API versioning strategy before the first public
 release.
 
 ------------------------------------------------------------------------
@@ -1635,7 +1642,7 @@ accounts/resources and restrict production access.
 
 # 40. Local Development
 
-`docker-compose.yml` should provide:
+The backend repository's `docker-compose.yml` should provide:
 
 ``` text
 postgres
@@ -1645,11 +1652,15 @@ redis
 The applications can run locally:
 
 ``` text
-Next.js -> localhost
-FastAPI -> localhost
+front/ Next.js -> localhost
+back/ FastAPI -> localhost
 Postgres -> Docker
 Redis -> Docker
 ```
+
+The frontend configures the local API base URL. Each repository has its own
+environment example and start/test commands; backend migrations and data-service
+configuration belong to the backend repository.
 
 Optional full-container development can be supported, but it should not
 be required.
@@ -1826,25 +1837,17 @@ Use Sentry or equivalent for application exceptions.
 
 # 45. Deployment Pipeline
 
-GitHub Actions:
+Each code repository has its own GitHub Actions pipeline and deploys
+independently:
 
 ``` text
-Pull Request
-    |
-    +--> lint
-    +--> typecheck
-    +--> unit tests
-    +--> integration tests
-    |
-    v
-merge
-    |
-    +--> build
-    +--> deploy staging
-    |
-    v
-production approval/deploy
+Backend PR -> lint/typecheck/tests/OpenAPI export check -> staging -> production
+Frontend PR -> lint/typecheck/tests/API client compatibility -> staging -> production
 ```
+
+For a feature touching both repositories, link the related changes and verify
+them together in staging. Backend API changes must remain compatible with the
+currently deployed frontend during staggered releases.
 
 Database migrations must run through a controlled migration system.
 
@@ -1882,7 +1885,9 @@ features remain gated until their applicable decision is approved.
 
 ## Phase 1 --- Foundation and security baseline
 
--   monorepo, Next.js, FastAPI, PostgreSQL, SQLAlchemy, and Alembic
+-   separate frontend and backend repositories, Next.js, FastAPI, PostgreSQL,
+    SQLAlchemy, and Alembic
+-   backend OpenAPI export and frontend client compatibility checks
 -   Docker Compose, CI, staging deployment, and controlled migrations
 -   structured logging, request IDs, error monitoring, and health checks
 -   secrets management, dependency scanning, backups, and restore procedure
@@ -1990,7 +1995,7 @@ The default assumption is that all of these are unnecessary.
 
 # 48. Code-Agent Rules
 
-Code agents working on this repository must follow these rules.
+Code agents working on the Cleanzza repositories must follow these rules.
 
 ### Rule 1 --- Preserve architecture
 

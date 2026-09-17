@@ -29,10 +29,11 @@ The documentation repository tracked `product_description.md` and
 configuration, test tooling, application code, OpenAPI generation command, or
 established Pull Request settings visible in the checkout.
 
-Consequently:
+The architecture now calls for separate frontend and backend Git repositories,
+alongside this documentation repository. Consequently:
 
-- The target monorepo structure and stack in `docs/technical_architecture.md`
-  govern initial scaffolding.
+- The separate-repository structure and stack in
+  `docs/technical_architecture.md` govern initial scaffolding.
 - Empty directories are not established implementation conventions.
 - The first change that introduces a test runner, formatter, linter, type
   checker, migration command, or OpenAPI workflow must document the canonical
@@ -179,9 +180,11 @@ Whenever an API is created or modified:
 6. Run any generated-client or contract-diff check established by the
    repository.
 
-OpenAPI work is part of the feature and must not be postponed as cleanup. Once
-an export or generated TypeScript client is checked in, CI must fail when it is
-stale.
+OpenAPI work is part of the feature and must not be postponed as cleanup. The
+backend repository publishes or exports the versioned OpenAPI contract. The
+frontend repository pins a compatible contract or generated TypeScript client.
+CI must fail when the frontend client is stale against its pinned contract.
+Breaking API changes require a compatible rollout across both repositories.
 
 Do not introduce a second API documentation or generation mechanism without a
 clear, documented requirement.

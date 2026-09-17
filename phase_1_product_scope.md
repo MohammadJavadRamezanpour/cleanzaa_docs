@@ -6,6 +6,9 @@
 
 This is the customer- and worker-facing scope for the first product release. “Worker” here refers to the **cleaner** role used in the [technical architecture](technical_architecture.md). The architecture's numbered implementation phases describe build order; they are not product release numbers.
 
+The Next.js frontend and FastAPI backend are developed in separate Git
+repositories and deployed independently.
+
 ## Worker app
 
 The worker can:
