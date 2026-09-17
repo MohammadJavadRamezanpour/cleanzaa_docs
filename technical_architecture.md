@@ -25,12 +25,15 @@ referrals, support chat, service evidence photos, and operational rules.
 
 ## 1.1 Specification status and unresolved product decisions
 
+**Confirmed launch country:** Italy. Any expansion to other countries requires
+a separate review of currency, operations, and applicable rules.
+
 This document defines the technical direction, but it must not be used to
 invent unresolved business or legal policy. The following decisions must be
 recorded before the affected feature is implemented:
 
-- operating country or countries, supported currencies, and applicable
-  privacy, employment, marketplace, and payment regulations
+- launch currency and the applicable Italian and EU privacy, employment,
+  marketplace, and payment requirements
 - payment provider and its marketplace, payout, stored-value, refund, and
   off-session payment capabilities
 - whether Cleanzza ever holds customer funds or whether all balances are
@@ -1857,7 +1860,8 @@ definition of done and leave a deployable, observable system.
 
 ## Phase 0 --- Resolve launch-critical decisions
 
--   operating jurisdiction, currency, and privacy/retention policy
+-   confirm the launch currency and Italy-specific privacy, employment,
+    marketplace, payment, and retention requirements
 -   payment provider and merchant/marketplace funds flow
 -   exact cash, EUR 10, automatic-debit, refund, and payout rules
 -   service duration, price, surcharge, overtime, cancellation, and no-show
