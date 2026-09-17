@@ -511,6 +511,12 @@ SEARCHING -> EXPIRED
 is never `RATED`, `PAID`, or `DISPUTED`; those states belong to their own
 entities.
 
+The [Phase 1 product scope](phase_1_product_scope.md) also requires an
+**On the Way** customer status and customer confirmation after worker
+completion. Define the backend events and any additional fulfillment states
+for these before implementing the Phase 1 order flow; do not infer them from
+frontend activity. The displayed status may be a projection of backend state.
+
 ## 10.2 Offers
 
 ``` text
@@ -1857,6 +1863,9 @@ depend on it.
 
 Implement vertical slices in this order. Each phase must satisfy the relevant
 definition of done and leave a deployable, observable system.
+These are engineering implementation phases, not product release numbers. The
+[Phase 1 product release](phase_1_product_scope.md) spans the relevant slices
+below.
 
 ## Phase 0 --- Resolve launch-critical decisions
 
