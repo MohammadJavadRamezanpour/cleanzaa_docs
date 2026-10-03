@@ -26,3 +26,17 @@ continues.
 
 Verification: from `back/`, run `.venv/bin/pytest -q` and
 `.venv/bin/python -m scripts.export_openapi --check`.
+
+## Routing errors
+
+An unknown backend path returns `404` with
+`{"error":{"code":"NOT_FOUND","message":"Resource not found."}}`.
+Calling an existing backend path with an unsupported HTTP method returns `405`
+with `{"error":{"code":"METHOD_NOT_ALLOWED","message":"Method not allowed."}}`.
+Both responses include `X-Request-ID`; the `405` response retains its `Allow`
+header. These messages do not expose a route's internal exception detail.
+
+For the current health routes, these errors require no authentication and have
+no request body, idempotency, database write, or audit effect. Explicit `404`
+exceptions also use this format; any endpoint-specific access rules remain with
+that endpoint. The generated OpenAPI operations are unchanged.
