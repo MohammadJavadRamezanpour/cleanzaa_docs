@@ -40,3 +40,13 @@ For the current health routes, these errors require no authentication and have
 no request body, idempotency, database write, or audit effect. Explicit `404`
 exceptions also use this format; any endpoint-specific access rules remain with
 that endpoint. The generated OpenAPI operations are unchanged.
+
+## Unexpected server errors
+
+An unhandled backend exception returns `500` with
+`{"error":{"code":"INTERNAL_ERROR","message":"Internal server error."}}`.
+The response includes `X-Request-ID`, and a server error log records that same
+ID, the method, path, and `500` status. Exception details are not returned to
+the client or written to that structured request log. This change introduces
+no new route or database migration, so the generated OpenAPI operations remain
+unchanged.
