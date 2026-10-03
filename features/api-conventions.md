@@ -1,5 +1,19 @@
 # API conventions
 
+## OpenAPI export
+
+FastAPI routes and Pydantic schemas are the source for the backend API
+contract. The generated artifact is `back/openapi/openapi.json`; its current
+`info.version` is `0.1.0`. From `back/`, run
+`.venv/bin/python -m scripts.export_openapi` after changing a route or schema.
+Backend CI runs `.venv/bin/python -m scripts.export_openapi --check` and fails
+if the committed artifact is stale.
+
+Document each endpoint's actual request, response, errors, and access rules in
+its feature document when that endpoint is built. A breaking API change also
+needs a compatibility and deployment plan before the frontend updates its
+pinned contract.
+
 ## Validation errors
 
 The FastAPI application returns a consistent response when request data fails
@@ -21,8 +35,7 @@ parameters, so this change does not alter the exported OpenAPI artifact. Their
 existing response contracts are documented in
 [application-foundation.md](application-foundation.md). No authentication,
 authorization, idempotency, database write, or audit event is involved in
-handling a validation failure. Other error cases will be covered as B02
-continues.
+handling a validation failure.
 
 Verification: from `back/`, run `.venv/bin/pytest -q` and
 `.venv/bin/python -m scripts.export_openapi --check`.
