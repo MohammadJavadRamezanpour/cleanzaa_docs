@@ -41,6 +41,27 @@ no request body, idempotency, database write, or audit effect. Explicit `404`
 exceptions also use this format; any endpoint-specific access rules remain with
 that endpoint. The generated OpenAPI operations are unchanged.
 
+## Other expected HTTP errors
+
+When backend code raises an HTTP error, its status is preserved and its detail
+is replaced with a safe, machine-readable response:
+
+| Status | Code | Message |
+| --- | --- | --- |
+| `400` | `BAD_REQUEST` | `Invalid request.` |
+| `401` | `UNAUTHENTICATED` | `Authentication required.` |
+| `403` | `FORBIDDEN` | `Access denied.` |
+| `409` | `CONFLICT` | `Request conflicts with current state.` |
+| `429` | `RATE_LIMITED` | `Too many requests.` |
+
+Explicitly raised HTTP statuses not listed here or under routing errors use
+`HTTP_ERROR` and `Request failed.`
+The response retains headers supplied with the exception, including
+`WWW-Authenticate` on `401` and `Retry-After` on `429`, and receives
+`X-Request-ID`. This is response formatting only; authentication and permission
+rules are not implemented by this handler. No production route or generated
+OpenAPI operation changes here.
+
 ## Unexpected server errors
 
 An unhandled backend exception returns `500` with
