@@ -10,7 +10,7 @@ Cleaners can select this section to register or sign in to their accounts using 
 
 ### 2 Request Cleaning
 
-This section is for users and customers—in other words, owners of homes, cars, pets, offices, swimming pools, or anything else requiring cleaning. Selecting this option takes them directly to the customer area. First-time users must register and verify their identities.
+This section is for users and customers—in other words, owners of homes, cars, pets, offices, swimming pools, or anything else requiring cleaning. Selecting this option takes them directly to the customer area. First-time customers verify their mobile number to create an account. The Phase 1 data policy is recorded in [ADR 0002](adr/0002-phase-1-personal-data.md).
 
 The rest of the page should contain brand messaging, an explanation of how the platform works, descriptions of our services, and key statements that reassure users and encourage them to choose us.
 
@@ -22,17 +22,24 @@ On this page, the cleaner must:
 2. Choose a username and password, then request verification.
 3. Enter the verification code sent to their phone number.
 4. Open the verification email and select the account-confirmation option.
-5. Upload images of the front and back of a valid legal residence permit and enter its expiration date.
-6. Take and submit a selfie using the application's camera.
+5. Capture both sides of an ID card, or the required identity pages of a
+   passport, live in the application. Provide work-authorization evidence where
+   applicable.
+6. Take and submit a live selfie using the application's camera.
 7. Enter their fiscal or tax code.
 8. Enter their bank account details.
 9. Read and download the terms, select **I accept the terms**, and submit the application for review.
 
-After approval, the cleaner must state whether they are employed, a student, or unemployed. An employed person or student must upload supporting documentation.
+The cleaner also states whether they are employed, a student, or unemployed.
+An employed person or student uploads supporting documentation.
 
 The cleaner must then select the service areas in which they can work. A professional certificate must be uploaded for every service category except home cleaning. For home cleaning, the cleaner may identify themselves as either a beginner or a professional.
 
 Next, the cleaner must indicate whether they own cleaning supplies and equipment, such as a mop or vacuum cleaner. If they do, they must list the equipment they have. Finally, they answer five psychological-assessment questions and receive a welcome message.
+
+An authorized administrator manually checks identity and qualifications,
+records the decision and reason, and approves the cleaner before they can
+receive or accept jobs.
 
 ## Cleaner Login Page
 
@@ -40,12 +47,13 @@ The cleaner signs in using the username and password selected during registratio
 
 ## Customer Registration Page
 
-Customers must:
-
-1. Enter their first and last name, date and place of birth, current place of residence, full home address, fiscal or tax code, and either a phone number or email address. Email is optional.
-2. Upload images of the front and back of a valid identity card and enter its expiration date.
-3. Upload a selfie and valid bank account details.
-4. Read the terms and select **I accept the terms**.
+Customers verify their mobile number with a short-lived code to create an
+account. Before their first booking, they provide their name and service
+address and accept the current terms; until then the account is pending
+activation and cannot place an order. Payment information is collected by the
+selected payment provider when needed. Birth details, tax code, identity-card
+images, a selfie, and bank details are not routine customer registration
+requirements; a separately approved need is required before collecting them.
 
 ## Customer Login Page
 
@@ -63,6 +71,10 @@ The profile also includes:
 - A payment history showing total earnings and commissions paid.
 - Profile viewing and editing.
 - Always-available online support chat.
+- Approved completed-work highlights, ratings, and achievements. Home photos
+  appear only after completion, customer satisfaction, administrator approval,
+  and separate homeowner consent. Without photo consent, only non-private
+  ratings and achievements appear. Consent can be withdrawn.
 
 ## Customer Profile
 
@@ -86,7 +98,11 @@ The customer profile also includes:
 
 ## Orders Shown to Cleaners
 
-The cleaner sees a continuously updated list of available services. Each listing is removed as soon as another cleaner accepts it. Every listing shows the service type, date, time, customer name, and options to accept or reject the request.
+The cleaner sees a continuously updated list of available services. Each listing
+is removed as soon as another cleaner accepts it. Every listing shows the
+service type, date, time, and options to accept or reject the request. The
+customer name, exact address, phone number, and private images are hidden until
+acceptance; the exact address is then shown only to the assigned cleaner.
 
 If a cleaner accepts a service at a particular date and time, they cannot accept another order for the same time slot.
 
@@ -117,6 +133,12 @@ When the cleaner arrives, they must select **I have arrived** and take a selfie.
 
 When the cleaning is complete, the cleaner selects **Complete**, uploads photographs of the cleaned areas, and specifies the settlement method. The cleaner hands the location back to the customer and leaves. Payment settlement may take up to two days, depending on the bank and the type of bank account.
 
+Stored service photos are available only to authorized administrators and
+case-scoped support. Raw photos are deleted seven days after completion unless
+a documented complaint or legal hold applies. A separately approved,
+anonymized publication copy may remain on the cleaner's profile while the
+homeowner's photo consent remains active. See [ADR 0002](adr/0002-phase-1-personal-data.md).
+
 ## Payment
 
 After the work is complete, the customer must pay either online or in cash.
@@ -130,12 +152,39 @@ If settlement is not completed within 48 hours, the customer's account is blocke
 
 After an order is complete, the customer can rate the cleaner and submit feedback or criticism.
 
+The customer can separately consent to publication of approved home photos
+with the rating and satisfaction feedback. Without photo consent, the cleaner
+may display only the rating and non-private achievements. The homeowner's
+name, address, and contact details are never published.
+
 ## Cleaner Rules
 
-- A cleaner may not take photographs outside the platform. If a violation is observed or reported, the cleaner receives a negative score and a 20-day suspension.
-- A cleaner must be punctual, clean, well-groomed, pleasant-smelling, and courteous. A reported violation results in a 10-day suspension and a monetary fine.
+Acceptance, rejection, dismissal, reinstatement, fines, and bonuses require a
+recorded decision and reason from an authorized user. Allegations are reviewed
+before sanctions or any referral to authorities; financial rules require a
+separately approved policy.
+
+- A cleaner may not take photographs outside the platform. A reported violation
+  is reviewed before any score change or suspension.
+- A cleaner must be punctual, clean, well-groomed, pleasant-smelling, and
+  courteous. A reported violation is reviewed before any suspension or fine.
 - A cleaner must comply with all customer-privacy requirements and other relevant rules so the customer's peace and safety are not put at risk.
 - A cleaner who damages a customer's property must compensate the customer for the damage.
-- If a cleaner is reported for theft, they are treated as an offender, permanently blocked, and reported to the police.
-- A cleaner represents the company and must not engage in personal advertising. A reported violation results in the cleaner being classified as noncompliant, blocked, and potentially subject to legal action.
-- A cleaner who takes longer than reasonably permitted to complete a job is fined. Cleaners who complete their work more quickly and accurately are rewarded.
+- A theft allegation triggers a restricted account and human investigation.
+  A referral to authorities requires an applicable legal basis and review.
+- A cleaner represents the company and must not engage in personal advertising.
+  A reported violation is reviewed before any restriction or legal action.
+- Service duration and quality may inform an approved fine or bonus only under
+  a separately approved financial policy.
+
+## Information changes and account exit
+
+Users may edit ordinary profile details and request a copy or deletion of
+their data. Correcting a verified identity record requires fresh SMS
+verification, a new selfie, identification images, a signed request letter,
+and manual review. A cleaner who leaves cannot accept new jobs. Their account
+is restricted during a three-month review, with limited emails to former
+clients about unresolved issues; ordinary account data is then deleted unless
+an actual case or legal duty requires a documented hold. Customer deletion is
+handled separately. The detailed policy and decisions to revisit are in
+[ADR 0002](adr/0002-phase-1-personal-data.md).
