@@ -63,9 +63,9 @@ request bodies, credentials, and database URLs are not logged. Backend
 unexpected errors are reported through Sentry when configured. The frontend
 initializes Sentry for client and server errors when configured.
 
-Backend CORS currently permits only GET requests from configured origins, as
-the foundation exposes only GET routes. Later API cards must expand methods and
-headers deliberately. Health routes have no ownership requirement and reveal
+The foundation initially permitted only GET requests. The B03 auth slice adds
+POST and credentialed CORS for configured origins; see
+[customer-authentication.md](customer-authentication.md). Health routes have no ownership requirement and reveal
 no user or system data beyond availability. The initial Alembic revision has
 no domain tables; migrations are applied by a predeploy command before the
 backend readiness gate admits traffic.

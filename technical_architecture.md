@@ -42,8 +42,10 @@ recorded before the affected feature is implemented:
 - authorization and customer consent required for any automatic debit
 - pricing, duration, overtime, cancellation, no-show, refund, and repeat-
   cleaner surcharge rules
-- retention periods and deletion rules for identity documents, selfies,
-  service photographs, assessment responses, and financial records
+- legal validation and deletion mechanics for identity documents, selfies,
+  published photographs, assessment responses, backup copies, and financial
+  records; [ADR 0002](adr/0002-phase-1-personal-data.md) sets the proposed
+  seven-day raw service-photo rule and three-month cleaner exit review
 - the supported behavior of the emergency-call feature in each operating
   region
 - whether restricting complaints to customers who uploaded before-service
@@ -81,18 +83,21 @@ concrete requirement requires it.**
 
   API style                           REST/JSON
 
-  File storage                        S3-compatible object storage
+  File storage                        Private S3-compatible object storage
+                                      controlled by Cleanzza
 
   Cache/queue                         Redis, only where needed
 
   Background jobs                     Python worker
 
-  Frontend deployment                 Vercel or equivalent
+  Frontend deployment                 Cleanzza-controlled cloud account;
+                                      Vercel or equivalent only after review
 
-  Backend deployment                  Docker container on a managed
-                                      container platform
+  Backend deployment                  Docker container in a Cleanzza-controlled
+                                      cloud account on a managed platform
 
-  Database deployment                 Managed PostgreSQL
+  Database deployment                 Managed PostgreSQL in a Cleanzza-
+                                      controlled cloud account
 
   CI/CD                               GitHub Actions
 
@@ -375,28 +380,19 @@ must be separated from customer and cleaner profiles.
 
 # 7. Customer Domain
 
-Customer registration requires:
-
--   first and last name
--   date/place of birth
--   current residence
--   home address
--   fiscal/tax code
--   phone or email
--   identity document front/back
--   document expiration
--   selfie
--   bank details
--   acceptance of terms
-
-These requirements come from the product specification.
+For Phase 1, verified mobile contact creates a pending customer account.
+Activation and booking require a name, service address, and acceptance of the
+current terms. The backend must reject an order from a pending account. The
+approved product direction and remaining data-policy dependencies are recorded
+in [ADR 0002](adr/0002-phase-1-personal-data.md). Birth details, fiscal code,
+identity images, selfies, and bank details are not routine customer signup
+fields. A specific approved need is required before collecting them.
 
 Recommended separation:
 
 ``` text
 users
 customer_profiles
-identity_documents
 verification_records
 payment_customer_references
 payment_method_references
@@ -414,20 +410,21 @@ references must be opaque identifiers issued by the selected payment provider.
 
 # 8. Cleaner Domain
 
-Cleaner registration requires:
+Cleaner registration and onboarding require:
 
 -   identity/personal information
 -   username/password
 -   phone verification
 -   email confirmation
--   residence permit front/back
--   permit expiration
--   selfie
+-   live in-app capture of both sides of an ID card or the required passport
+    identity pages
+-   live in-app selfie
+-   work-authorization evidence where applicable
 -   fiscal/tax code
 -   bank details
 -   terms acceptance
 
-After approval, the cleaner provides:
+Before approval, the cleaner provides qualification and service information:
 
 -   employment/student/unemployed status
 -   supporting documentation when applicable
@@ -437,6 +434,11 @@ After approval, the cleaner provides:
 -   home-cleaning experience level
 -   equipment/supplies
 -   psychological-assessment responses
+
+An authorized administrator manually verifies identity and qualifications,
+records the decision and reason, and approves the cleaner before they receive
+or accept work. The review console and private document upload belong in the
+same delivery slice.
 
 Suggested entities:
 
@@ -457,6 +459,12 @@ payout_account_references
 Cleaner payout/bank details should be collected and hosted by the marketplace
 payment provider where possible. Cleanzza stores only the minimum provider
 account identifiers and status needed for payout eligibility.
+
+Acceptance, rejection, dismissal, reinstatement, fines, and bonuses require an
+authorized recorded decision. Financial penalties and bonuses remain gated on
+their separate policy. Cleaner exit immediately removes job eligibility; the
+three-month review and deletion policy is in
+[ADR 0002](adr/0002-phase-1-personal-data.md).
 
 ------------------------------------------------------------------------
 
@@ -774,6 +782,14 @@ When work is complete:
 4.  Order moves into payment settlement.
 
 Completion photographs should be stored in object storage.
+Raw service photographs may be retrieved only by authorized administrators and
+case-scoped support, with access recorded. The uploader may submit but does not
+receive a durable read grant. Delete raw service photos and temporary
+service-location notes seven days after completion unless a documented case or
+legal hold applies. A profile publication uses a separately approved,
+anonymized copy and recorded, revocable homeowner consent; it is not a grant to
+read the raw evidence. Ratings and non-private achievements may appear without
+photo consent. See [ADR 0002](adr/0002-phase-1-personal-data.md).
 
 Suggested:
 
@@ -1384,6 +1400,10 @@ Do not create a separate admin backend initially.
 A minimal verification and support console is required in the same delivery
 slice as cleaner verification. Do not postpone operational tooling while making
 manual approval a prerequisite for marketplace supply.
+The console must identify the authorized reviewer, record a reason and time
+for approval/rejection and later dismissal/reinstatement, and log access to
+identity evidence. Fines and bonuses require the separately approved financial
+policy before the console can execute them.
 
 ------------------------------------------------------------------------
 
@@ -1899,10 +1919,11 @@ features remain gated until their applicable decision is approved.
 -   customer and cleaner authentication
 -   SMS/email delivery required by authentication
 -   user roles, sessions, recovery, and contact verification
--   customer and cleaner profiles
+-   customer and cleaner profiles, customer activation and order gate
 -   object storage, secure upload finalization, and document metadata
 -   terms versioning and acceptance
--   cleaner verification/approval workflow
+-   cleaner live selfie and ID/passport capture, qualification review, and
+    manual verification/approval workflow
 -   minimal admin console required to review and approve cleaners
 
 ## Phase 3 --- Catalogue, quote, and order slice
@@ -2066,8 +2087,10 @@ create cyclic dependencies.
 ### Rule 13 --- Minimize sensitive data
 
 Collect, expose, retain, and log only the sensitive data required for an
-approved workflow. Use provider-hosted identity and payment collection where
-possible.
+approved workflow. Store identity and service images in Cleanzza-controlled
+private storage; an approved SMS or payment provider receives only the minimum
+data needed for its task. Apply the purpose-specific retention and publication
+rules in [ADR 0002](adr/0002-phase-1-personal-data.md).
 
 ------------------------------------------------------------------------
 

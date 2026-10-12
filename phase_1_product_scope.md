@@ -28,8 +28,14 @@ The worker can:
 13. Complete or end the job.
 14. View earnings.
 15. View their rating.
+16. Show approved completed-work highlights on their profile, with home photos
+    only when the homeowner has separately consented to publication.
 
 The full customer address and private details become available only after the worker accepts the job. Job acceptance must remain safe when multiple workers respond at once, and the worker must not be assigned overlapping jobs.
+Before receiving or accepting jobs, the worker completes live identity capture
+and service-qualification review and is manually approved by an authorized
+administrator. Service photos can be captured and submitted but their stored
+originals are visible only to authorized administrators and case-scoped support.
 
 ## Customer app
 
@@ -42,11 +48,16 @@ The customer can:
 5. Submit a service request.
 6. View the order status: **Requested**, **Accepted**, **On the Way**, **In Progress**, or **Completed**.
 7. View the assigned worker's information.
-8. View the Before Photo.
-9. View the After Photo.
-10. Confirm the completed service.
-11. Rate the worker.
-12. View order history.
+8. Confirm the completed service.
+9. Rate the worker and record satisfaction feedback.
+10. Decide separately whether approved home photos may appear on the worker's
+    profile; withdrawing consent removes the published copy.
+11. View order history.
+
+Phone verification creates an account. Before booking, the customer provides
+a name and service address and accepts the current terms. Until then the account
+is pending activation and cannot place an order. See
+[ADR 0002](adr/0002-phase-1-personal-data.md) for the Phase 1 data policy.
 
 ## Main journey
 
@@ -54,7 +65,7 @@ The customer can:
 2. Eligible workers see a job request. One worker accepts it, and the customer sees who was assigned.
 3. The worker travels to the job, checks in, and takes a Before Photo.
 4. The worker performs the job, takes an After Photo, and marks the job complete.
-5. The customer reviews the photos, confirms completion, and can rate the worker. Both users can review the relevant history; the worker can view earnings and rating.
+5. The customer confirms completion and can rate the worker without access to raw service photos. Both users can review the permitted history; the worker can view earnings and rating. An approved, anonymized photo may appear on the worker's profile only with the homeowner's separate consent.
 
 The customer sees the five status labels listed above. Each label must be backed by a defined server-side event or state; the UI alone cannot declare a job accepted, in progress, or completed.
 
@@ -63,7 +74,8 @@ The customer sees the five status labels listed above. Each label must be backed
 - What action or event sets **On the Way**? The worker app list does not yet specify a departure action.
 - Does check-in start **In Progress**, or does the Before Photo or another action start it?
 - Does **Completed** mean the worker ended the job, the customer confirmed it, or both? What happens if the customer does not confirm?
-- What information and photos may each user see at each point in the journey?
+- Which job details may each user see at each point in the journey, and what
+  separate preview, if any, can the customer see without exposing raw evidence?
 - Does **earnings** mean expected earnings, completed-job earnings, paid-out earnings, or separate totals?
 - What is the price calculation for each of the three services, and what payment method and timing apply?
 
