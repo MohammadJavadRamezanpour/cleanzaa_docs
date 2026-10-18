@@ -15,6 +15,11 @@ The `CUSTOMER` role is authentication/authorization context, not proof of
 account activation or booking eligibility. This authentication slice has no
 activation field or order API.
 
+OTP challenges are now purpose-scoped to `CUSTOMER` or `CLEANER` by migration
+`0005_worker_phone_profile`. A customer-purpose code cannot create a worker
+role. Phone and IP rate limits remain shared across both paths. The separate
+[worker phone/profile slice](worker-phone-profile.md) reuses this session model.
+
 The Phase 1 data scope comes from [ADR 0002](../adr/0002-phase-1-personal-data.md).
 
 ## API contract
