@@ -7,8 +7,9 @@ live identity images and service certificate evidence. It records ownership and
 purpose in PostgreSQL, verifies an uploaded object before marking it ready,
 and gives an `ADMIN` reviewer one-use, short-lived access with an audit event
 for each successful read. The worker sees only file status, never a durable raw
-download. The browser will later connect live camera capture and service
-selection to this API as B04/B05 continue.
+download. The `/worker` browser screen now offers certificate upload for Car
+Wash and Pet Care. Live camera capture and editable service selection remain
+B04/B05 work.
 
 This is **not all of B06**. Service photos require an order and case model;
 correction documents require the verified-correction flow and its own retention
@@ -61,6 +62,25 @@ human reviewer must still assess identity evidence.
 
 No list endpoint, pagination, ordering, or filtering is provided in this
 slice. Reviewer selection by worker and approved service belongs to B07.
+
+## Mobile certificate upload
+
+On `/worker`, a signed-in worker selects Car Wash or Pet Care and a JPEG, PNG,
+or PDF certificate of at most 10 MiB. The mobile form hashes the file locally,
+requests a private ticket with the worker session and CSRF token, submits the
+returned form fields and file directly to storage, and finalizes with a random
+`Idempotency-Key`. It shows preparing, percentage upload progress, finalizing,
+success, and failure states. A retry after an interrupted storage transfer
+reuses the pending ticket; a retry after a lost finalization response uses the
+same file ID and idempotency key. An expired or missing upload gets a new
+ticket. Changing the service or file starts a new attempt. The browser does
+not receive a permanent read URL or store the file in local storage.
+
+The screen instructs workers to use only test files until the real-evidence
+policy is approved. Backend production collection remains disabled. This
+certificate upload does not yet associate the file with an editable worker
+service/qualification record; B05 will add that link. It does not claim live
+ID/selfie capture, which belongs to B04.
 
 ## Database, idempotency, and cleanup
 
