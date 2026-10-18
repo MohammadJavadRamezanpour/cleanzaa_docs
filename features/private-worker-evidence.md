@@ -30,6 +30,9 @@ All API responses use the standard error envelope
 Mutating endpoints require an allowed `Origin`, the HTTP-only session cookie,
 and `X-CSRF-Token`. The worker must have a database-backed `CLEANER` role;
 review access requires `ADMIN`. A caller never chooses the owner or object key.
+The API CORS preflight permits the browser's `Idempotency-Key` finalization
+header and `X-File-Access-Token` reviewer-read header for configured frontend
+origins.
 
 | Method and path | Request | Success | Access and errors |
 | --- | --- | --- | --- |
