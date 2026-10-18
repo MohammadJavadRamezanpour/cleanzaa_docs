@@ -10,9 +10,10 @@ verified phone number. The roles do not grant each other automatically.
 
 This slice does **not** grant job eligibility. The response always returns
 `job_eligible: false`. Private certificate storage and a test-file upload
-screen now exist under B06. Live identity capture, service selection and
-qualification association, worker terms, and reviewer approval are B04, B05,
-and B07 work still needed to finish onboarding. No job-offer or acceptance API
+screen exist under B06; B05 adds editable services, Milano area, experience,
+equipment/supplies declarations, and certificate association. Live identity
+capture, worker terms, and reviewer approval remain B04 and B07 work needed
+to finish onboarding. No job-offer or acceptance API
 exists. Real identity evidence remains subject to
 [ADR 0002](../adr/0002-phase-1-personal-data.md); service choices follow
 [ADR 0003](../adr/0003-phase-1-launch-services.md).
@@ -79,9 +80,9 @@ customer area. It restores a worker session on load, otherwise asks for a phone
 number and then a six-digit code. An authenticated customer without the worker
 role can verify their number to add pending worker access. The profile screen
 edits legal first and last names, shows the review state, and offers the
-private certificate upload described in
-[private worker evidence](private-worker-evidence.md). Identity capture and
-approval remain later steps. Sign-out revokes the current
+[work profile](worker-work-profile.md) and
+[private certificate upload](private-worker-evidence.md). Identity capture
+and approval remain later steps. Sign-out revokes the current
 session. The frontend never stores the session cookie or private profile in
 local storage; requests use the HTTP-only cookie and CSRF token.
 The customer screen similarly offers phone verification to a worker-only
