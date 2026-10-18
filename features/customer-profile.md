@@ -15,8 +15,9 @@ This slice contains no order creation endpoint. It provides
 future order service to call **inside the order creation transaction**. That
 service must reject `CustomerNotActive` before inserting an order. Until it is
 wired into an order endpoint, no customer can place an order through this API.
-The customer frontend, terms content, phone change, identity correction, data
-export, and deletion flows are separate work. The policy comes from
+The [customer frontend](customer-mobile-sign-in.md) is delivered in a separate
+code repository. Terms content, phone change, identity correction, data export,
+and deletion flows are separate work. The policy comes from
 [ADR 0002](../adr/0002-phase-1-personal-data.md).
 
 ## API contract

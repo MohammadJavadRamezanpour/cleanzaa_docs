@@ -9,7 +9,8 @@ shared user identity, a `CUSTOMER` role, and a linked customer record. This
 slice provides code delivery, verification, revocable sessions, rotation, and
 role checks. The following [profile and activation slice](customer-profile.md)
 adds name, address, terms acceptance, and a booking eligibility policy. Account
-closure, phone changes, order creation, and frontend screens remain later work.
+closure, phone changes, and order creation remain later work. The
+[customer frontend](customer-mobile-sign-in.md) provides the B03 browser flow.
 The `CUSTOMER` role is authentication/authorization context, not proof of
 account activation or booking eligibility. This authentication slice has no
 activation field or order API.
