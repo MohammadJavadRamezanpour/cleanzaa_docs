@@ -7,9 +7,9 @@ live identity images and service certificate evidence. It records ownership and
 purpose in PostgreSQL, verifies an uploaded object before marking it ready,
 and gives an `ADMIN` reviewer one-use, short-lived access with an audit event
 for each successful read. The worker sees only file status, never a durable raw
-download. The `/worker` browser screen now offers certificate upload for Car
-Wash and Pet Care. Live camera capture and editable service selection remain
-B04/B05 work.
+download. The `/worker` browser screen offers certificate upload for Car
+Wash and Pet Care, a [work profile](worker-work-profile.md), and
+[live camera capture](worker-identity-evidence.md) for identity images.
 
 This is **not all of B06**. Service photos require an order and case model;
 correction documents require the verified-correction flow and its own retention
@@ -60,7 +60,7 @@ Accepted purposes are `ID_FRONT`, `ID_BACK`, `PASSPORT_IDENTITY`,
 8 MiB. Certificate purposes accept JPEG, PNG, or PDF up to 10 MiB. The claimed
 media type must match the file's signature; a certificate PDF is not an ID
 capture. The API does not itself prove that an image came from a live camera;
-the B04 browser capture flow will not offer gallery substitution, and B07's
+the B04 browser capture flow does not offer gallery substitution, and B07's
 human reviewer must still assess identity evidence.
 
 No list endpoint, pagination, ordering, or filtering is provided in this
@@ -83,7 +83,7 @@ The screen instructs workers to use only test files until the real-evidence
 policy is approved. Backend production collection remains disabled. The ready
 file ID can be linked to the matching Car Wash or Pet Care offering when the
 worker saves their [work profile](worker-work-profile.md). It does not claim
-live ID/selfie capture, which belongs to B04.
+live ID/selfie capture, which is documented under B04 separately.
 
 ## Database, idempotency, and cleanup
 

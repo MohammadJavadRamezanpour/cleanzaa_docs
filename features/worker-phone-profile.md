@@ -12,7 +12,8 @@ This slice does **not** grant job eligibility. The response always returns
 `job_eligible: false`. Private certificate storage and a test-file upload
 screen exist under B06; B05 adds editable services, Milano area, experience,
 equipment/supplies declarations, and certificate association. Live identity
-capture, worker terms, and reviewer approval remain B04 and B07 work needed
+capture now uses the [private evidence status](worker-identity-evidence.md)
+flow. Worker terms and reviewer approval remain B04 and B07 work needed
 to finish onboarding. No job-offer or acceptance API
 exists. Real identity evidence remains subject to
 [ADR 0002](../adr/0002-phase-1-personal-data.md); service choices follow
