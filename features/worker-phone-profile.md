@@ -13,8 +13,9 @@ This slice does **not** grant job eligibility. The response always returns
 screen exist under B06; B05 adds editable services, Milano area, experience,
 equipment/supplies declarations, and certificate association. Live identity
 capture now uses the [private evidence status](worker-identity-evidence.md)
-flow. Worker terms and reviewer approval remain B04 and B07 work needed
-to finish onboarding. No job-offer or acceptance API
+flow. Versioned [worker terms acceptance](worker-terms-acceptance.md) is now
+available when approved terms are configured; reviewer approval remains B07
+work needed to finish onboarding. No job-offer or job-acceptance API
 exists. Real identity evidence remains subject to
 [ADR 0002](../adr/0002-phase-1-personal-data.md); service choices follow
 [ADR 0003](../adr/0003-phase-1-launch-services.md).
@@ -46,7 +47,7 @@ and profile `PATCH` sets explicit field values.
 Example new profile:
 
 ```json
-{"first_name":null,"last_name":null,"review_status":"PENDING","job_eligible":false}
+{"first_name":null,"last_name":null,"review_status":"PENDING","job_eligible":false,"accepted_terms_version":null,"accepted_terms_at":null,"current_terms_version":null}
 ```
 
 `PATCH` trims names and permits a non-empty subset. Each name is at most 80
@@ -82,8 +83,10 @@ number and then a six-digit code. An authenticated customer without the worker
 role can verify their number to add pending worker access. The profile screen
 edits legal first and last names, shows the review state, and offers the
 [work profile](worker-work-profile.md) and
-[private certificate upload](private-worker-evidence.md). Identity capture
-and approval remain later steps. Sign-out revokes the current
+[private certificate upload](private-worker-evidence.md). The
+[identity capture](worker-identity-evidence.md) section saves private evidence
+status; approval remains a later step. The worker terms section records explicit
+acceptance only after approved terms are published. Sign-out revokes the current
 session. The frontend never stores the session cookie or private profile in
 local storage; requests use the HTTP-only cookie and CSRF token.
 The customer screen similarly offers phone verification to a worker-only
