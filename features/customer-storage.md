@@ -24,8 +24,11 @@ Alembic revision `0002_customers` created:
 Revision `0003_customer_auth` later adds nullable, unique `user_id` to link new
 verified accounts without rewriting any earlier minimal records.
 
-There is no mutable customer profile field yet. The repository provides
-`create_customer(session)` and `get_customer(session, customer_id)`. Creation
+The initial storage slice had no mutable customer profile field. The later
+[profile and activation slice](customer-profile.md) adds nullable name and
+service address fields plus terms acceptance records in revision
+`0004_customer_profile`. The repository provides `create_customer(session)` and
+`get_customer(session, customer_id)`. Creation
 flushes the row so its generated timestamp is available, but it does not commit;
 the caller owns the transaction. A missing ID returns `None`. The primary key
 prevents duplicate IDs.

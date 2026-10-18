@@ -7,12 +7,13 @@ A verified phone number creates or signs in a customer whose account is
 service address, and acceptance of the current terms. The backend stores a
 shared user identity, a `CUSTOMER` role, and a linked customer record. This
 slice provides code delivery, verification, revocable sessions, rotation, and
-role checks. Profile fields, terms acceptance, booking eligibility, account
-closure, phone changes, and frontend screens belong to later work. A customer
-account created here cannot book until those later requirements are met. The
-`CUSTOMER` role is authentication/authorization context, not proof of account
-activation or booking eligibility. This slice has no activation field or order
-API; the future profile/terms slice must add the server-side activation gate.
+role checks. The following [profile and activation slice](customer-profile.md)
+adds name, address, terms acceptance, and a booking eligibility policy. Account
+closure, phone changes, and order creation remain later work. The
+[customer frontend](customer-mobile-sign-in.md) provides the B03 browser flow.
+The `CUSTOMER` role is authentication/authorization context, not proof of
+account activation or booking eligibility. This authentication slice has no
+activation field or order API.
 
 The Phase 1 data scope comes from [ADR 0002](../adr/0002-phase-1-personal-data.md).
 
