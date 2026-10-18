@@ -154,6 +154,12 @@ homeowner's photo consent remains active. See [ADR 0002](adr/0002-phase-1-person
 
 ## Payment
 
+For the first Milano release, [ADR 0004](adr/0004-phase-1-pricing-direction.md)
+sets EUR hourly customer-facing prices, free pre-start cancellation, no automatic
+no-show charge, and no repeat-worker surcharge in the first rule version. The
+broader payment and repeat-worker ideas below require later decisions before
+they can be enabled. Tax, commission, and payment flow remain launch gates.
+
 After the work is complete, the customer must pay either online or in cash.
 
 - For an online payment, the platform deducts its commission and pays the remaining amount to the cleaner.

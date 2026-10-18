@@ -2,6 +2,8 @@
 
 **Launch country and area:** Italy; Comune di Milano only (ADR 0003)
 
+**Pricing direction:** EUR hourly gross prices and booking policies in [ADR 0004](adr/0004-phase-1-pricing-direction.md); accepted real quotes remain gated by tax and payment decisions.
+
 **Status:** Confirmed feature scope; operating and payment rules linked below remain open.
 
 This is the customer- and worker-facing scope for the first product release. “Worker” here refers to the **cleaner** role used in the [technical architecture](technical_architecture.md). The architecture's numbered implementation phases describe build order; they are not product release numbers.
@@ -88,6 +90,6 @@ The customer sees the five status labels listed above. Each label must be backed
 - Which job details may each user see at each point in the journey, and what
   separate preview, if any, can the customer see without exposing raw evidence?
 - Does **earnings** mean expected earnings, completed-job earnings, paid-out earnings, or separate totals?
-- What is the price calculation for each of the three services, and what payment method and timing apply?
+- Which approved merchant/tax treatment, commission and payment method/timing apply to accepted quotes? ADR 0004 fixes customer-facing hourly amounts and booking policy but leaves these launch gates open.
 
-The [technical architecture](technical_architecture.md) records the remaining launch decisions. In particular, this scope does not decide currency, payment provider, cash or wallet availability, pricing rules, document retention, complaint eligibility, emergency behavior, or support staffing. Unlisted features are not automatically excluded because this is a minimum scope.
+The [technical architecture](technical_architecture.md) records the remaining launch decisions. ADR 0004 selects EUR and Phase 1 customer-facing prices. Payment provider, cash or wallet availability, tax treatment, commission, document retention, complaint eligibility, emergency behavior, and support staffing remain open. Unlisted features are not automatically excluded because this is a minimum scope.
