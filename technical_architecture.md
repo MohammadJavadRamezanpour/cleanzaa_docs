@@ -40,8 +40,11 @@ recorded before the affected feature is implemented:
   provider-managed
 - the exact meaning of the EUR 10 cash-commission rule
 - authorization and customer consent required for any automatic debit
-- pricing, duration, overtime, cancellation, no-show, refund, and repeat-
+- pricing, overtime, cancellation, no-show, refund, and repeat-
   cleaner surcharge rules
+- quote calculation and travel-buffer rules; requested whole-hour durations
+  and launch service inputs are fixed by
+  [ADR 0003](adr/0003-phase-1-launch-services.md)
 - legal validation and deletion mechanics for identity documents, selfies,
   published photographs, assessment responses, backup copies, and financial
   records; [ADR 0002](adr/0002-phase-1-personal-data.md) sets the proposed
@@ -429,8 +432,9 @@ Before approval, the cleaner provides qualification and service information:
 -   home-cleaning experience level
 -   work experience and equipment/supplies needed by the approved service rules
 
-The exact area choices, per-service qualifications, and booking fields remain
-gated on D1. Separate birth details, residential address, employment/student
+The Milano-only area choice, per-service qualifications, and booking fields are
+set by [ADR 0003](adr/0003-phase-1-launch-services.md). Separate birth details,
+residential address, employment/student
 status, psychological assessments, fiscal code, and bank details are deferred
 from Phase 1 onboarding until an approved legal or provider need requires them.
 Payout details belong with the selected marketplace payment provider. Worker
@@ -646,6 +650,11 @@ The constraint must ignore cancelled or expired assignments.
 Service duration must be produced by the accepted price quote before matching
 begins. Buffer/travel time is a product decision and, when enabled, must be
 included consistently in both matching and the database constraint.
+The Phase 1 customer requests 1–8 whole hours per selected service; combined
+services sum their hours into one contiguous window. The quote snapshots that
+duration and the versioned service-area catalogue defined in ADR 0003. The
+backend rejects an unsupported city/CAP combination before quote and order
+submission.
 
 ------------------------------------------------------------------------
 
@@ -1894,8 +1903,8 @@ below.
     marketplace, payment, and retention requirements
 -   payment provider and merchant/marketplace funds flow
 -   exact cash, EUR 10, automatic-debit, refund, and payout rules
--   service duration, price, surcharge, overtime, cancellation, and no-show
-    rules
+-   price, surcharge, overtime, cancellation, no-show, and quote-calculation
+    rules; requested whole-hour duration is set by ADR 0003
 -   complaint eligibility and emergency-feature review
 
 Produce short ADRs for these decisions. Financial, identity, and emergency

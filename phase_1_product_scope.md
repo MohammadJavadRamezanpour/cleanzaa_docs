@@ -1,6 +1,6 @@
 # Phase 1 Product Scope
 
-**Launch country:** Italy
+**Launch country and area:** Italy; Comune di Milano only (ADR 0003)
 
 **Status:** Confirmed feature scope; operating and payment rules linked below remain open.
 
@@ -39,9 +39,10 @@ originals are visible only to authorized administrators and case-scoped support.
 Worker registration and sign-in use a single-use phone code and revocable
 session. The worker remains pending until required profile data, private
 identity evidence, qualifications, and published worker terms acceptance are
-reviewed and approved. D1 still determines exact service-area choices and
-service-specific qualifications; production collection of real identity
-evidence remains subject to ADR 0002's legal, retention, and provider gates.
+reviewed and approved. [ADR 0003](adr/0003-phase-1-launch-services.md) sets the
+Milano service-area choice and service-specific qualifications. Production
+collection of real identity evidence remains subject to ADR 0002's legal,
+retention, and provider gates.
 
 ## Customer app
 
@@ -64,6 +65,10 @@ Phone verification creates an account. Before booking, the customer provides
 a name and service address and accepts the current terms. Until then the account
 is pending activation and cannot place an order. See
 [ADR 0002](adr/0002-phase-1-personal-data.md) for the Phase 1 data policy.
+The launch catalogue permits only Milano addresses and requires whole-hour
+duration (1–8 hours) and the service-specific fields in
+[ADR 0003](adr/0003-phase-1-launch-services.md). Unsupported cities cannot be
+quoted or booked.
 
 ## Main journey
 
