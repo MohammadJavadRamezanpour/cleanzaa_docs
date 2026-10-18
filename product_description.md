@@ -29,8 +29,9 @@ For Phase 1, the cleaner:
 4. Selects offered services and supported service areas, describes work
    experience, and supplies required qualifications. Home cleaning may use
    beginner or professional level; Car Wash and Pet Care require certificate
-   evidence under the current product direction. D1 must approve exact areas,
-   service inputs, and qualifications before those selections go live.
+   evidence under the current product direction. The Phase 1 area, service
+   inputs, and qualifications are set in
+   [ADR 0003](adr/0003-phase-1-launch-services.md).
 5. Reads the published, versioned worker terms and explicitly accepts them
    before submitting for authorized manual review.
 
@@ -94,6 +95,13 @@ The page includes an **I need cleaning** option. After selecting it, the custome
 7. Where applicable, provide details such as the breed of their dog or cat or the model of their car.
 8. Indicate whether cleaning equipment or supplies are required.
 9. Start the search so the system can intelligently match the request with a cleaner.
+
+For the Phase 1 launch, the customer selects a Milano address and a whole-hour
+duration of 1–8 hours for each selected service. Home Cleaning asks for the
+worker level, parts/rooms, and room count; Car Wash asks for car make/model;
+Pet Care asks for dog/cat and breed. Each service asks separately whether the
+worker must bring equipment and supplies. The full field and matching contract
+is in [ADR 0003](adr/0003-phase-1-launch-services.md).
 
 The customer profile also includes:
 

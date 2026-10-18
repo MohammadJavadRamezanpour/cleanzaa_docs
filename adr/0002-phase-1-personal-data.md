@@ -31,7 +31,8 @@ provider, and retention review remains required before production collection.
   evidence where applicable, offered services, service areas, and qualifications
   required for those services. Capture a versioned worker terms acceptance once
   approved terms are published. Service-specific fields and exact area choices
-  still depend on D1. Defer separate birth details, residential address,
+  are defined in [ADR 0003](0003-phase-1-launch-services.md). Defer separate
+  birth details, residential address,
   employment/student status, psychological assessments, fiscal code, and bank
   details until a documented legal or provider need is approved; do not copy
   payment account details into Cleanzza storage.
@@ -151,8 +152,8 @@ this decision.
 
 ## Revisit before affected implementation or launch
 
-- Confirm service-specific qualifications and supported area choices through
-  D1. The accepted live capture instructions are ID front and back, or the
+- Use the service-specific qualifications and Milano area choice in ADR 0003.
+  The accepted live capture instructions are ID front and back, or the
   passport identity page plus any legally required second page, with no gallery
   substitution. Confirm the exact extra passport page and reviewer procedure
   before enabling real identity collection.
