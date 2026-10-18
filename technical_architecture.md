@@ -1142,8 +1142,9 @@ mobile number + verification code
 
 The verified phone maps to one user with one or both `CUSTOMER` and `CLEANER`
 roles. A cleaner role is pending until the separate manual review and approval
-policy grants job eligibility. Admin and support authentication requires a
-separate stronger-access decision before those tools are enabled. The exact
+policy grants job eligibility. Designated admins use the managed MFA and
+allowlist contract in [ADR 0005](adr/0005-admin-managed-mfa.md). Support
+access needs a separate case-scoped grant before private evidence can be read. The exact
 SMS provider/library can be selected during implementation and must pass the
 provider/privacy review before production use.
 

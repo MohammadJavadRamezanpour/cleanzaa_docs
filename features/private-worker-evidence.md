@@ -5,7 +5,8 @@
 This slice provides a private S3-compatible upload path for a pending worker's
 live identity images and service certificate evidence. It records ownership and
 purpose in PostgreSQL, verifies an uploaded object before marking it ready,
-and gives an `ADMIN` reviewer one-use, short-lived access with an audit event
+and gives a [managed-MFA `ADMIN` reviewer](admin-reviewer-authentication.md)
+one-use, short-lived access with an audit event
 for each successful read. The worker sees only file status, never a durable raw
 download. The `/worker` browser screen offers certificate upload for Car
 Wash and Pet Care, a [work profile](worker-work-profile.md), and
@@ -27,9 +28,11 @@ the generic storage direction is in the
 All API responses use the standard error envelope
 `{"error":{"code":"...","message":"..."}}` and `X-Request-ID`. They use
 `Cache-Control: no-store` where they contain file data, metadata, or a token.
-Mutating endpoints require an allowed `Origin`, the HTTP-only session cookie,
-and `X-CSRF-Token`. The worker must have a database-backed `CLEANER` role;
-review access requires `ADMIN`. A caller never chooses the owner or object key.
+Worker mutations require an allowed `Origin`, the HTTP-only session cookie,
+and `X-CSRF-Token`. The worker must have a database-backed `CLEANER` role.
+Reviewer endpoints instead require a managed MFA bearer, exact subject
+allowlist, and database `ADMIN` role under ADR 0005. A caller never chooses
+the owner or object key.
 The API CORS preflight permits the browser's `Idempotency-Key` finalization
 header and `X-File-Access-Token` reviewer-read header for configured frontend
 origins.
@@ -39,8 +42,8 @@ origins.
 | `POST /files/worker-uploads` | Session cookie, CSRF, JSON purpose, `content_type`, `size_bytes`, lowercase hex `sha256` | `201` upload ticket below | Worker; `401`, `403`, `422` invalid purpose/type/size/hash, `503` storage disabled or unavailable. |
 | `GET /files/{file_id}` | UUID path, session cookie | `200 {"file_id":"<UUID>","purpose":"ID_FRONT","status":"PENDING"}` | Owner worker only; `401`, `403`, `404` other owner/missing, `503`. No raw URL. |
 | `POST /files/{file_id}/finalize` | UUID path, session cookie, CSRF, mandatory `Idempotency-Key` header (1–128 chars), no body | `200` status with `READY` | Owner worker only; `401`, `403`, `404`, `409` missing/expired object or key conflict, `422` invalid stored content or missing header, `503`. Same actor, key, and file retry returns the prior success. |
-| `POST /files/{file_id}/review-access` | UUID path, admin session, CSRF, `{"reason":"worker identity review"}` | `200 {"token":"<opaque>","expires_in_seconds":60}` | Admin only; `401`, `403`, `404`, `409` file not ready, `422` reason not 10–200 trimmed characters, `503`. Issuance alone creates no read audit. |
-| `GET /files/review-access/content` | Admin session and `X-File-Access-Token` header | `200` original bytes with stored media type | Same admin actor who requested access; `401`, `403`, `404` missing/used/expired/other actor token, `409` object missing or changed, `422` missing token header, `503` storage unavailable. A successful response consumes the token and records the reason/actor/file/time. |
+| `POST /files/{file_id}/review-access` | UUID path, admin MFA bearer, `{"reason":"worker identity review"}` | `200 {"token":"<opaque>","expires_in_seconds":60}` | Admin only; `401`, `403`, `404`, `409` file not ready, `422` reason not 10–200 trimmed characters, `503`. Issuance alone creates no read audit. |
+| `GET /files/review-access/content` | Admin MFA bearer and `X-File-Access-Token` header | `200` original bytes with stored media type | Same admin actor who requested access; `401`, `403`, `404` missing/used/expired/other actor token, `409` object missing or changed, `422` missing token header, `503` storage unavailable. A successful response consumes the token and records the reason/actor/file/time. |
 
 The ticket response contains `file_id`, `upload_url`, `fields`, and an
 explicit-offset `expires_at`. The browser submits a `multipart/form-data` POST
