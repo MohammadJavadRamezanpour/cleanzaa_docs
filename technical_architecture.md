@@ -346,8 +346,8 @@ users
 - id
 - email
 - phone
-- username
-- password_hash (nullable when passwordless authentication is used)
+- username (only if a later approved flow needs it)
+- password_hash (only if a later approved flow uses passwords)
 - authentication_status
 - created_at
 - updated_at
@@ -412,28 +412,30 @@ references must be opaque identifiers issued by the selected payment provider.
 
 Cleaner registration and onboarding require:
 
--   identity/personal information
--   username/password
--   phone verification
--   email confirmation
+-   single-use phone verification, a revocable session, and a pending `CLEANER`
+    role; no Phase 1 username/password or email confirmation
+-   legal first and last name
 -   live in-app capture of both sides of an ID card or the required passport
     identity pages
 -   live in-app selfie
 -   work-authorization evidence where applicable
--   fiscal/tax code
--   bank details
--   terms acceptance
+-   acceptance of approved, versioned worker terms before review
 
 Before approval, the cleaner provides qualification and service information:
 
--   employment/student/unemployed status
--   supporting documentation when applicable
 -   service areas
 -   service categories
 -   professional certificates where required
 -   home-cleaning experience level
--   equipment/supplies
--   psychological-assessment responses
+-   work experience and equipment/supplies needed by the approved service rules
+
+The exact area choices, per-service qualifications, and booking fields remain
+gated on D1. Separate birth details, residential address, employment/student
+status, psychological assessments, fiscal code, and bank details are deferred
+from Phase 1 onboarding until an approved legal or provider need requires them.
+Payout details belong with the selected marketplace payment provider. Worker
+identity collection in production remains gated on the approved retention,
+backup, regional, and provider review in [ADR 0002](adr/0002-phase-1-personal-data.md).
 
 An authorized administrator manually verifies identity and qualifications,
 records the decision and reason, and approves the cleaner before they receive
@@ -445,12 +447,10 @@ Suggested entities:
 ``` text
 cleaner_profiles
 cleaner_verification
-cleaner_employment
 cleaner_service_areas
 cleaner_services
 cleaner_certifications
 cleaner_equipment
-cleaner_assessments
 cleaner_scores
 cleaner_suspensions
 payout_account_references
@@ -1124,25 +1124,23 @@ unless its model is explicitly polymorphic and well constrained.
 
 # 26. Authentication
 
-Authentication requirements differ by actor.
-
-Cleaner:
-
-``` text
-username + password
-```
-
-Customer:
+Customer and cleaner Phase 1 access use the same mechanism:
 
 ``` text
 mobile number + verification code
 ```
 
-The exact provider/library can be selected during implementation.
+The verified phone maps to one user with one or both `CUSTOMER` and `CLEANER`
+roles. A cleaner role is pending until the separate manual review and approval
+policy grants job eligibility. Admin and support authentication requires a
+separate stronger-access decision before those tools are enabled. The exact
+SMS provider/library can be selected during implementation and must pass the
+provider/privacy review before production use.
 
 Regardless of mechanism:
 
--   Passwords must never be stored plaintext.
+-   If a later approved flow introduces passwords, they must never be stored
+    plaintext.
 -   OTPs must be stored hashed, expire, and be single-use.
 -   OTP attempts must be rate-limited.
 -   Authentication endpoints must be rate-limited.
@@ -1416,8 +1414,8 @@ Example endpoints:
 ``` text
 POST   /auth/customer/request-otp
 POST   /auth/customer/verify-otp
-POST   /auth/cleaner/register
-POST   /auth/cleaner/login
+POST   /auth/cleaner/request-otp
+POST   /auth/cleaner/verify-otp
 POST   /auth/logout
 
 GET    /me
@@ -1588,7 +1586,7 @@ Minimum requirements:
 -   HTTPS everywhere outside local development.
 -   Secure HTTP-only cookies if cookie-based sessions are used.
 -   CSRF protection where applicable.
--   Strong password hashing.
+-   Strong password hashing if a later approved flow uses passwords.
 -   OTP expiration and rate limiting.
 -   API rate limiting.
 -   Private object storage.

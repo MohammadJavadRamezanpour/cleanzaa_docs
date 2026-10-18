@@ -1,8 +1,8 @@
 # ADR 0002: Phase 1 personal-data and account policy
 
-**Status:** Product direction revised 2026-10-11. The interpretations below are
-recorded for implementation and may be changed by a later ADR. Legal, provider,
-and retention review remains required before production collection.
+**Status:** Phase 1 product direction approved 2026-10-18. The interpretations
+below are recorded for implementation and may be changed by a later ADR. Legal,
+provider, and retention review remains required before production collection.
 
 ## Decision
 
@@ -19,6 +19,22 @@ and retention review remains required before production collection.
   the identity page and other required side of a passport, plus evidence needed
   for the services they offer. The reviewer records the decision, reason, actor,
   and time. Work authorization is checked where applicable.
+- Phase 1 cleaner registration and sign-in use the same single-use phone-code
+  mechanism and revocable session model as customers, with a distinct `CLEANER`
+  role and pending worker profile. Username/password and email confirmation are
+  not Phase 1 gates. A person may hold both customer and cleaner roles, but a
+  phone code cannot grant job eligibility; manual approval is always required.
+  An email may be added later for notices, with verification before it is used
+  for sensitive communications.
+- Collect the minimum worker profile needed for review: legal first and last
+  name, verified phone, live selfie, live ID/passport captures, work-authorization
+  evidence where applicable, offered services, service areas, and qualifications
+  required for those services. Capture a versioned worker terms acceptance once
+  approved terms are published. Service-specific fields and exact area choices
+  still depend on D1. Defer separate birth details, residential address,
+  employment/student status, psychological assessments, fiscal code, and bank
+  details until a documented legal or provider need is approved; do not copy
+  payment account details into Cleanzza storage.
 - The assigned cleaner receives the exact service address only after accepting
   the order. Before acceptance, the listing omits customer identity, exact
   address, phone number, and private images. Private data is available only to
@@ -38,6 +54,14 @@ and retention review remains required before production collection.
   browse the stored originals; the customer cannot retrieve them. Customer
   completion confirmation and complaints therefore cannot depend on viewing
   those photographs. Access is logged.
+- Worker identity images, selfies, and qualification evidence are available to
+  the submitting worker only during the active capture/upload flow and to
+  designated reviewers for a recorded review purpose. The worker sees evidence
+  status afterward, not a raw download. General support access does not include
+  identity evidence. Every reviewer read is audited. Before job acceptance the
+  worker sees only a redacted offer; afterward only the assigned worker receives
+  the exact address and needed job details. The customer sees the assigned
+  worker's public profile, not private identity documents.
 - Raw service photographs and temporary service-location notes are deleted
   seven days after completion, unless a documented complaint, dispute, or legal
   hold requires a longer, separately recorded period. This seven-day rule does
@@ -127,8 +151,11 @@ this decision.
 
 ## Revisit before affected implementation or launch
 
-- Confirm the exact required customer and cleaner fields, service-specific
-  qualifications, and acceptable ID/passport capture instructions.
+- Confirm service-specific qualifications and supported area choices through
+  D1. The accepted live capture instructions are ID front and back, or the
+  passport identity page plus any legally required second page, with no gallery
+  substitution. Confirm the exact extra passport page and reviewer procedure
+  before enabling real identity collection.
 - Approve and publish an immutable customer terms document, its version and
   HTTPS URL before configuring activation in staging or production. Confirm how
   all API instances switch to the new version before enabling order creation.
@@ -136,6 +163,10 @@ this decision.
   copy lifetime, backup expiry, and statutory transaction/identity retention.
 - Decide the approved cloud region, infrastructure owner, SMS and payment
   providers, and contracts for any cross-border transfer.
+- Approve a purpose-specific retention and deletion schedule for identity,
+  selfie, qualification, and work-authorization evidence, including backups,
+  before real worker registration is enabled. Until then, use synthetic data
+  in controlled development or staging only.
 - Define customer satisfaction, publication consent/withdrawal, anonymization
   review, and whether a customer can see any separate non-evidence preview.
 - Define which former clients receive exit emails, the permitted message and

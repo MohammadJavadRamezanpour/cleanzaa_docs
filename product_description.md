@@ -6,7 +6,9 @@ This document describes the platform's main pages, registration and service work
 
 ### 1 Cleaner Login and Registration
 
-Cleaners can select this section to register or sign in to their accounts using their username and password.
+Cleaners can select this section to register or sign in with a single-use phone
+code in Phase 1. The approved onboarding direction is in
+[ADR 0002](adr/0002-phase-1-personal-data.md).
 
 ### 2 Request Cleaning
 
@@ -16,26 +18,29 @@ The rest of the page should contain brand messaging, an explanation of how the p
 
 ## Cleaner Registration Page
 
-On this page, the cleaner must:
+For Phase 1, the cleaner:
 
-1. Enter their first and last name, date and place of birth, current place of residence, full address, email address, and phone number.
-2. Choose a username and password, then request verification.
-3. Enter the verification code sent to their phone number.
-4. Open the verification email and select the account-confirmation option.
-5. Capture both sides of an ID card, or the required identity pages of a
-   passport, live in the application. Provide work-authorization evidence where
-   applicable.
-6. Take and submit a live selfie using the application's camera.
-7. Enter their fiscal or tax code.
-8. Enter their bank account details.
-9. Read and download the terms, select **I accept the terms**, and submit the application for review.
+1. Verifies a phone number with a single-use code and receives a pending worker
+   account. No username, password, or email confirmation is required.
+2. Enters legal first and last name.
+3. Captures both sides of an ID card, or the passport identity page and any
+   legally required second page, live in the application. They also submit a
+   live selfie and work-authorization evidence where applicable.
+4. Selects offered services and supported service areas, describes work
+   experience, and supplies required qualifications. Home cleaning may use
+   beginner or professional level; Car Wash and Pet Care require certificate
+   evidence under the current product direction. D1 must approve exact areas,
+   service inputs, and qualifications before those selections go live.
+5. Reads the published, versioned worker terms and explicitly accepts them
+   before submitting for authorized manual review.
 
-The cleaner also states whether they are employed, a student, or unemployed.
-An employed person or student uploads supporting documentation.
-
-The cleaner must then select the service areas in which they can work. A professional certificate must be uploaded for every service category except home cleaning. For home cleaning, the cleaner may identify themselves as either a beginner or a professional.
-
-Next, the cleaner must indicate whether they own cleaning supplies and equipment, such as a mop or vacuum cleaner. If they do, they must list the equipment they have. Finally, they answer five psychological-assessment questions and receive a welcome message.
+The application shows a pending status until an administrator approves both
+identity and service qualifications. Separate birth details, residence,
+employment/student status, psychological assessments, fiscal code, and bank
+details are deferred from Phase 1 onboarding until a documented legal or
+provider need is approved. Payout details should be collected by the selected
+marketplace provider rather than by Cleanzza. The approved private-evidence
+access and production collection gates are in ADR 0002.
 
 An authorized administrator manually checks identity and qualifications,
 records the decision and reason, and approves the cleaner before they can
@@ -43,7 +48,7 @@ receive or accept jobs.
 
 ## Cleaner Login Page
 
-The cleaner signs in using the username and password selected during registration.
+The cleaner signs in using a single-use code sent to their verified phone.
 
 ## Customer Registration Page
 
