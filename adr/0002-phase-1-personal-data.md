@@ -88,11 +88,13 @@ and retention review remains required before production collection.
 
 ## Consequences and implementation boundaries
 
-The B03 phone authentication slice creates a customer and session but has no
-profile, terms, order, or activation endpoint. Its `CUSTOMER` role means only
-that the user may access customer functions; it does not mean the account is
-active or eligible to book. The later profile/terms slice must expose pending
-versus active state and enforce the order gate on the server. Cleaner review,
+The B03 phone authentication slice creates a customer and session. Its
+`CUSTOMER` role means only that the user may access customer functions; it does
+not mean the account is active or eligible to book. The following
+[profile and activation slice](../features/customer-profile.md) records name,
+address, and terms acceptance and exposes pending versus active state. It
+provides a database-backed booking eligibility policy, which the future order
+creation transaction must call; no order endpoint exists yet. Cleaner review,
 private upload, admin approval, photo publication, offboarding, and correction
 are separate delivery slices with authorization and PostgreSQL integration
 tests. The Phase 1 scope, product description, and technical architecture use
@@ -127,6 +129,9 @@ this decision.
 
 - Confirm the exact required customer and cleaner fields, service-specific
   qualifications, and acceptable ID/passport capture instructions.
+- Approve and publish an immutable customer terms document, its version and
+  HTTPS URL before configuring activation in staging or production. Confirm how
+  all API instances switch to the new version before enabling order creation.
 - Validate the seven-day deletion scope, complaint and legal holds, published
   copy lifetime, backup expiry, and statutory transaction/identity retention.
 - Decide the approved cloud region, infrastructure owner, SMS and payment
