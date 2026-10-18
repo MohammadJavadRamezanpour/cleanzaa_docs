@@ -80,10 +80,10 @@ ticket. Changing the service or file starts a new attempt. The browser does
 not receive a permanent read URL or store the file in local storage.
 
 The screen instructs workers to use only test files until the real-evidence
-policy is approved. Backend production collection remains disabled. This
-certificate upload does not yet associate the file with an editable worker
-service/qualification record; B05 will add that link. It does not claim live
-ID/selfie capture, which belongs to B04.
+policy is approved. Backend production collection remains disabled. The ready
+file ID can be linked to the matching Car Wash or Pet Care offering when the
+worker saves their [work profile](worker-work-profile.md). It does not claim
+live ID/selfie capture, which belongs to B04.
 
 ## Database, idempotency, and cleanup
 
