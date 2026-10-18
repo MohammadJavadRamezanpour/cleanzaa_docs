@@ -36,6 +36,12 @@ Before receiving or accepting jobs, the worker completes live identity capture
 and service-qualification review and is manually approved by an authorized
 administrator. Service photos can be captured and submitted but their stored
 originals are visible only to authorized administrators and case-scoped support.
+Worker registration and sign-in use a single-use phone code and revocable
+session. The worker remains pending until required profile data, private
+identity evidence, qualifications, and published worker terms acceptance are
+reviewed and approved. D1 still determines exact service-area choices and
+service-specific qualifications; production collection of real identity
+evidence remains subject to ADR 0002's legal, retention, and provider gates.
 
 ## Customer app
 
