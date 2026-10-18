@@ -32,18 +32,19 @@ This document defines the technical direction, but it must not be used to
 invent unresolved business or legal policy. The following decisions must be
 recorded before the affected feature is implemented:
 
-- launch currency and the applicable Italian and EU privacy, employment,
-  marketplace, and payment requirements
+- applicable Italian and EU privacy, employment, marketplace, tax, and payment
+  requirements; [ADR 0004](adr/0004-phase-1-pricing-direction.md) selects EUR
 - payment provider and its marketplace, payout, stored-value, refund, and
   off-session payment capabilities
 - whether Cleanzza ever holds customer funds or whether all balances are
   provider-managed
 - the exact meaning of the EUR 10 cash-commission rule
 - authorization and customer consent required for any automatic debit
-- pricing, overtime, cancellation, no-show, refund, and repeat-
-  cleaner surcharge rules
-- quote calculation and travel-buffer rules; requested whole-hour durations
-  and launch service inputs are fixed by
+- tax treatment, commission, and payment/refund execution before accepting
+  real quotes; [ADR 0004](adr/0004-phase-1-pricing-direction.md) fixes the
+  first gross EUR hourly price table, overtime, cancellation, no-show,
+  repeat-worker fee, quote validity and matching-buffer product direction;
+  requested whole-hour durations and inputs are fixed by
   [ADR 0003](adr/0003-phase-1-launch-services.md)
 - legal validation and deletion mechanics for identity documents, selfies,
   published photographs, assessment responses, backup copies, and financial
