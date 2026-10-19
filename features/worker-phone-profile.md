@@ -8,14 +8,15 @@ backend stores a `CLEANER` role and an owned cleaner profile in `PENDING`
 review status. A person can hold both customer and cleaner roles on the same
 verified phone number. The roles do not grant each other automatically.
 
-This slice does **not** grant job eligibility. The response always returns
-`job_eligible: false`. Private certificate storage and a test-file upload
+Phone verification alone does **not** grant job eligibility. The response
+returns `job_eligible: true` only after the separate
+[review decision](worker-review-decisions.md) approves the worker and the
+current terms version remains accepted. Private certificate storage and a test-file upload
 screen exist under B06; B05 adds editable services, Milano area, experience,
 equipment/supplies declarations, and certificate association. Live identity
 capture now uses the [private evidence status](worker-identity-evidence.md)
 flow. Versioned [worker terms acceptance](worker-terms-acceptance.md) is now
-available when approved terms are configured; reviewer approval remains B07
-work needed to finish onboarding. No job-offer or job-acceptance API
+available when approved terms are configured. No job-offer or job-acceptance API
 exists. Real identity evidence remains subject to
 [ADR 0002](../adr/0002-phase-1-personal-data.md); service choices follow
 [ADR 0003](../adr/0003-phase-1-launch-services.md).
@@ -96,8 +97,8 @@ Migration `0005_worker_phone_profile` gives existing OTP rows the `CUSTOMER`
 purpose and creates `cleaners` with a unique user link, nullable names, and a
 constrained review status. It is additive for existing customer accounts.
 Downgrading would delete worker profiles and purpose separation and is unsafe
-after real worker registration. B07 must make the future job eligibility check
-server-side and transactionally enforced before any job API is enabled.
+after real worker registration. The review flow computes eligibility server-side;
+future job APIs must check it transactionally at assignment time.
 
 ## Verification and rollout
 

@@ -14,7 +14,7 @@ Admin API calls use `Authorization: Bearer <access token>`. The backend still ch
 
 ## Rollout and limits
 
-Backend admin endpoints fail closed without complete issuer, audience, client ID, allowlist and local `ADMIN` role. A tenant must be created in a reviewed EU region and a confidential admin application plus API audience configured; verify tenant ownership, subprocessors, factor recovery and access logs before real identity documents are enabled. Development and staging use synthetic evidence. The first backend slice hardens B06 reviewer file access; B07 still needs worker review records, approval decisions and a mobile review screen.
+Backend admin endpoints fail closed without complete issuer, audience, client ID, allowlist and local `ADMIN` role. A tenant must be created in a reviewed EU region and a dedicated public SPA admin application plus API audience configured; verify tenant ownership, subprocessors, factor recovery and access logs before real identity documents are enabled. The browser uses Auth0's authorization-code-with-PKCE SDK and in-memory token cache; it contains no client secret. The Auth0 application must allow the deployed `/admin/reviews` callback and logout URL and the admin API audience. Development and staging use synthetic evidence. The later B07 slices add audited worker decisions and a mobile review screen; live operation still depends on tenant provisioning and the ADR 0002 gates.
 
 Do not treat Auth0 organization email-domain discovery as an allowlist. Auth0 says it routes users for discovery but does not restrict who can sign in. Use exact subject mapping and the local role as independent checks.
 
