@@ -34,13 +34,13 @@ recorded before the affected feature is implemented:
 
 - applicable Italian and EU privacy, employment, marketplace, tax, and payment
   requirements; [ADR 0004](adr/0004-phase-1-pricing-direction.md) selects EUR
-- payment provider and its marketplace, payout, stored-value, refund, and
-  off-session payment capabilities
-- whether Cleanzza ever holds customer funds or whether all balances are
-  provider-managed
+- [ADR 0006](adr/0006-phase-1-payment-direction.md) selects Stripe Connect,
+  a platform charge and later worker transfer, no wallet or off-session debit,
+  and a nominal 20%/80% split; exact Italian account capabilities, provider
+  contract, and legal merchant/funds-flow validation remain launch gates
 - the exact meaning of the EUR 10 cash-commission rule
 - authorization and customer consent required for any automatic debit
-- tax treatment, commission, and payment/refund execution before accepting
+- tax treatment, invoicing, and payment/refund execution before accepting
   real quotes; [ADR 0004](adr/0004-phase-1-pricing-direction.md) fixes the
   first gross EUR hourly price table, overtime, cancellation, no-show,
   repeat-worker fee, quote validity and matching-buffer product direction;
