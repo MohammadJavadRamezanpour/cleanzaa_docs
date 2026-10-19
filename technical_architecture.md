@@ -516,22 +516,19 @@ linear order status. They progress independently and have different invariants.
 ## 10.1 Order fulfillment
 
 ``` text
-DRAFT -> SEARCHING -> ASSIGNED -> ARRIVED -> IN_PROGRESS -> COMPLETED
-   |         |            |          |            |
-   +---------+------------+----------+------------+----> CANCELLED
-
-SEARCHING -> EXPIRED
+DRAFT -> REQUESTED -> ACCEPTED -> ON_THE_WAY -> IN_PROGRESS -> WORKER_COMPLETED
+                        |            |             |             |                 |
+                        +------------+-------------+-------------+-----------------+--> CANCELLED / FAILED
 ```
 
-`ASSIGNED` means one cleaner has transactionally accepted the order. An order
-is never `RATED`, `PAID`, or `DISPUTED`; those states belong to their own
-entities.
-
-The [Phase 1 product scope](phase_1_product_scope.md) also requires an
-**On the Way** customer status and customer confirmation after worker
-completion. Define the backend events and any additional fulfillment states
-for these before implementing the Phase 1 order flow; do not infer them from
-frontend activity. The displayed status may be a projection of backend state.
+`ACCEPTED` means one cleaner has transactionally accepted the order. Check-in
+and the Before Photo are prerequisites for explicit service start, not status
+changes. Worker finish requires the After Photo. Customer confirmation and
+support outcome are separate events after `WORKER_COMPLETED`, which projects
+to the **Completed** label with a confirmation substatus. An order is never
+`RATED`, `PAID`, or `DISPUTED`; those states belong to other aggregates.
+[ADR 0007](adr/0007-phase-1-fulfillment-states.md) defines the approved
+events, actors, cancellation, failure, and status projection.
 
 ## 10.2 Offers
 
@@ -611,7 +608,7 @@ assign cleaner
 
 accept winning offer and invalidate remaining offers
 
-change fulfillment state to ASSIGNED
+change fulfillment state to ACCEPTED
 
 create order history record
 
@@ -788,8 +785,9 @@ When work is complete:
 
 1.  Cleaner selects Complete.
 2.  Cleaner uploads photographs of cleaned areas.
-3.  Cleaner specifies settlement method.
-4.  Order moves into payment settlement.
+3.  Backend records worker completion and awaits customer confirmation or an
+    authorized support outcome. Payment and payout states remain separate;
+    the worker transfer is held under ADR 0006 until confirmation/resolution.
 
 Completion photographs should be stored in object storage.
 Raw service photographs may be retrieved only by authorized administrators and
