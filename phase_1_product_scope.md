@@ -2,7 +2,9 @@
 
 **Launch country and area:** Italy; Comune di Milano only (ADR 0003)
 
-**Pricing direction:** EUR hourly gross prices and booking policies in [ADR 0004](adr/0004-phase-1-pricing-direction.md); accepted real quotes remain gated by tax and payment decisions.
+**Pricing direction:** EUR hourly gross prices and booking policies in [ADR 0004](adr/0004-phase-1-pricing-direction.md); accepted real quotes remain gated by tax, legal and provider validation.
+
+**Payment direction:** One card charge at booking through Stripe Connect, with Cleanzza intended as business of record and a nominal 20%/80% platform/worker split. [ADR 0006](adr/0006-phase-1-payment-direction.md) sets the product rule; Italian tax/legal, provider approval and invoicing remain gates before real acceptance or payment.
 
 **Status:** Confirmed feature scope; operating and payment rules linked below remain open.
 
@@ -89,7 +91,6 @@ The customer sees the five status labels listed above. Each label must be backed
 - Does **Completed** mean the worker ended the job, the customer confirmed it, or both? What happens if the customer does not confirm?
 - Which job details may each user see at each point in the journey, and what
   separate preview, if any, can the customer see without exposing raw evidence?
-- Does **earnings** mean expected earnings, completed-job earnings, paid-out earnings, or separate totals?
-- Which approved merchant/tax treatment, commission and payment method/timing apply to accepted quotes? ADR 0004 fixes customer-facing hourly amounts and booking policy but leaves these launch gates open.
+- Which Italian tax and invoice treatment applies to each service and the platform share, and does the intended business-of-record model pass legal/provider review? ADR 0006 fixes the product payment and earnings direction but leaves these launch gates open.
 
-The [technical architecture](technical_architecture.md) records the remaining launch decisions. ADR 0004 selects EUR and Phase 1 customer-facing prices. Payment provider, cash or wallet availability, tax treatment, commission, document retention, complaint eligibility, emergency behavior, and support staffing remain open. Unlisted features are not automatically excluded because this is a minimum scope.
+The [technical architecture](technical_architecture.md) records the remaining launch decisions. ADR 0004 selects EUR and Phase 1 customer-facing prices; ADR 0006 selects the payment flow, nominal split, and earnings states. Tax/invoicing, provider/legal validation, document retention, complaint eligibility, emergency behavior, and support staffing remain open. Unlisted features are not automatically excluded because this is a minimum scope.
