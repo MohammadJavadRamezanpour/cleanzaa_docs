@@ -83,12 +83,11 @@ quoted or booked.
 5. The customer confirms completion and can rate the worker without access to raw service photos. Both users can review the permitted history; the worker can view earnings and rating. An approved, anonymized photo may appear on the worker's profile only with the homeowner's separate consent.
 
 The customer sees the five status labels listed above. Each label must be backed by a defined server-side event or state; the UI alone cannot declare a job accepted, in progress, or completed.
+[ADR 0007](adr/0007-phase-1-fulfillment-states.md) defines the departure,
+check-in, photo, start, finish, confirmation, cancellation and failure events.
 
 ## Details to settle before implementation
 
-- What action or event sets **On the Way**? The worker app list does not yet specify a departure action.
-- Does check-in start **In Progress**, or does the Before Photo or another action start it?
-- Does **Completed** mean the worker ended the job, the customer confirmed it, or both? What happens if the customer does not confirm?
 - Which job details may each user see at each point in the journey, and what
   separate preview, if any, can the customer see without exposing raw evidence?
 - Which Italian tax and invoice treatment applies to each service and the platform share, and does the intended business-of-record model pass legal/provider review? ADR 0006 fixes the product payment and earnings direction but leaves these launch gates open.
