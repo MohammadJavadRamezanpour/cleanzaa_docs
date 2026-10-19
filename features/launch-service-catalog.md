@@ -6,7 +6,8 @@ The backend publishes one versioned, read-only catalog for the approved
 Milano launch. It contains Home Cleaning, Car Wash, and Pet Care only. The
 customer and worker browser can read the same API; the mobile `/services`
 page shows the choices and their essential inputs. There is no catalog editor,
-pricing, quote, or booking API in this slice.
+pricing, quote, or booking API in this original catalog slice. The later public
+draft price endpoint is documented in [pricing-quotes.md](pricing-quotes.md).
 
 [ADR 0003](../adr/0003-phase-1-launch-services.md) sets the product rules.
 `milano-v1` is a stable identifier. Changing coverage, fields, or
@@ -48,17 +49,17 @@ The backend's `is_supported_service` and `is_supported_address` functions
 reject codes outside these three and city/CAP combinations outside the launch
 gate. The city comparison is case-insensitive after trimming. The CAP gate is
 coarse and does not prove that an exact street belongs to the municipality.
-Future quote and order endpoints must call these checks within their own
-server-side validation; a frontend selection alone cannot authorize booking.
-There is currently no booking endpoint, so this catalog does not claim an
-end-to-end unsupported-booking rejection yet.
+The draft quote endpoint calls these checks within server-side validation; a
+frontend selection alone cannot authorize booking. There is currently no
+booking endpoint, so this catalog does not claim an end-to-end
+unsupported-booking rejection yet.
 
 ## Browser behavior
 
 `/services` loads the catalog from the API and displays a mobile-width view
 on phones and desktops. It has loading, failure/retry, and ready states. It
-shows all three services and the Milano area, with a clear message that
-booking and pricing are still forthcoming. Links from the customer and worker
+shows all three services and the Milano area, with a draft price preview and a
+clear message that booking is still forthcoming. Links from the customer and worker
 profile screens open the same view. The browser uses the generated TypeScript
 schema pinned to the backend OpenAPI export; it does not decide eligibility.
 
