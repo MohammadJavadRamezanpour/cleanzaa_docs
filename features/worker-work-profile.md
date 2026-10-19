@@ -10,9 +10,10 @@ ready private certificate file uploaded through B06. Matching can query these
 columns and rows without parsing free text. The catalogue identifier is
 `milano-v1`, aligned with [ADR 0003](../adr/0003-phase-1-launch-services.md).
 
-This captures worker declarations, not approval. B07 must review identity,
-Home Cleaning level, and Car Wash/Pet Care evidence before an offering is
-eligible. `job_eligible` remains false; no job matching or acceptance endpoint
+This captures worker declarations, not approval. The separate
+[review decision flow](worker-review-decisions.md) checks identity and
+Car Wash/Pet Care evidence before setting `APPROVED`. `job_eligible` requires
+approval and current worker terms acceptance; no job matching or acceptance endpoint
 exists yet. The browser editor and certificate association are part of this B05
 delivery; private bytes and reviewer access remain governed by
 [private worker evidence](private-worker-evidence.md).

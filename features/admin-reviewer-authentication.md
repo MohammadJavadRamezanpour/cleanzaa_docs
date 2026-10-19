@@ -2,7 +2,7 @@
 
 ## Purpose and scope
 
-The B06 private reviewer endpoints require managed Auth0 MFA plus an explicit subject allowlist and local `ADMIN` role. This backend slice closes the prior path in which a Cleanzza phone-code session with an `ADMIN` role could read private worker evidence. It does not yet provide the B07 review screen or approval decisions. [ADR 0005](../adr/0005-admin-managed-mfa.md) records the provider decision and deployment gates. Only synthetic identity data may be used until ADR 0002's retention and provider review is complete.
+The B06 private reviewer endpoints require managed Auth0 MFA plus an explicit subject allowlist and local `ADMIN` role. This security boundary closes the prior path in which a Cleanzza phone-code session with an `ADMIN` role could read private worker evidence. The [review decision flow](worker-review-decisions.md) uses the same boundary. [ADR 0005](../adr/0005-admin-managed-mfa.md) records the provider decision and deployment gates. Only synthetic identity data may be used until ADR 0002's retention and provider review is complete.
 
 ## Request contract
 
