@@ -25,6 +25,10 @@ file input. It shows recorded/missing states, upload progress, errors, retry,
 and a save control. Reloading reads saved references. Changing document type
 clears the old document references on the next save but keeps the selfie.
 Previously uploaded private files remain subject to B06 retention rules.
+Each camera trigger has a slot-specific accessible name. Opening the camera
+moves keyboard focus into a labelled capture group; Escape or Cancel closes it,
+stops the stream, and returns focus to the trigger. After a capture, focus
+returns when the upload/save attempt finishes, including error and retry states.
 
 ## API contract
 
