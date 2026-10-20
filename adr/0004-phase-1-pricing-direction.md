@@ -26,6 +26,8 @@ A combined 2-hour Home Cleaning and 1-hour Car Wash request is EUR 65.00 and res
 
 The EUR prices are gross customer-facing price ceilings for the listed scope. The European Commission lists Italy's **standard VAT rate as 22%**, but that does **not** establish the applicable tax treatment of each Cleanzza service or the party that invoices it. An Italian tax adviser must confirm merchant-of-record, invoice flow, applicable rate/exemption for each service and platform fee, and rounding before real quotes may be accepted. The backend must fail closed for quote acceptance in production until a versioned tax treatment is configured and reviewed. Do not insert a zero or guessed VAT amount into an accepted snapshot.
 
+The [Italy tax and Stripe review checklist](../operations/italy-tax-stripe-review-checklist.md) lists the written answers and worked examples required to close this gate. It records questions for reviewers, not approved tax treatment.
+
 [ADR 0006](0006-phase-1-payment-direction.md) defines the provisional 20% platform share, 80% worker share, Stripe Connect direction and booking charge. B09 can build deterministic draft quote calculation and synthetic acceptance tests, but cannot create real accepted orders until the tax, invoicing, legal and provider gates are cleared. An accepted snapshot eventually needs catalogue and pricing versions, each gross line, tax treatment/amount, discount/surcharge (zero in this version), gross total, platform commission, worker amount, currency and scheduled duration.
 
 ## Rationale and revisit

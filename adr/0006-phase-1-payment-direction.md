@@ -23,6 +23,8 @@ An accepted quote must freeze its pricing, catalogue and commission rule version
 
 Separate charge and transfer supports booking before a worker is assigned and keeps the customer's price distinct from worker settlement. Stripe documents Italy in its supported Connect regions and says that omitting `on_behalf_of` on separate charges makes the platform the business of record for the payment. These provider mechanics do **not** decide the legal merchant, employer, invoice issuer, or tax treatment of Cleanzza's services. Before live use, verify Stripe approval and account configuration, Italian marketplace/payment/employment law, the refund/chargeback allocation, worker contract and tax invoices, customer and worker terms, and the platform's ability to fund refunds if a charge is disputed or already transferred. Do not publish a payout date without provider confirmation.
 
+Use the [Italy tax and Stripe review checklist](../operations/italy-tax-stripe-review-checklist.md) to collect account-specific provider and legal answers before changing the acceptance or payment gate.
+
 ## References
 
 - [Pricing and booking policy](0004-phase-1-pricing-direction.md)
