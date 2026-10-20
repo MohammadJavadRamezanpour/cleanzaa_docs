@@ -6,6 +6,8 @@
 
 **Payment direction:** One card charge at booking through Stripe Connect, with Cleanzza intended as business of record and a nominal 20%/80% platform/worker split. [ADR 0006](adr/0006-phase-1-payment-direction.md) sets the product rule; Italian tax/legal, provider approval and invoicing remain gates before real acceptance or payment.
 
+**Support and feature boundary:** [ADR 0008](adr/0008-phase-1-boundaries-and-support.md) includes simple complaint/support cases and a human duty owner during active jobs. Cash, wallet, referrals, rewards, in-app emergency call, automatic penalties, and guaranteed live chat are deferred. Staffing and response arrangements remain a launch gate.
+
 **Status:** Confirmed feature scope; operating and payment rules linked below remain open.
 
 This is the customer- and worker-facing scope for the first product release. “Worker” here refers to the **cleaner** role used in the [technical architecture](technical_architecture.md). The architecture's numbered implementation phases describe build order; they are not product release numbers.
@@ -34,6 +36,7 @@ The worker can:
 15. View their rating.
 16. Show approved completed-work highlights on their profile, with home photos
     only when the homeowner has separately consented to publication.
+17. Open a support or complaint case about an active or completed job.
 
 The full customer address and private details become available only after the worker accepts the job. Job acceptance must remain safe when multiple workers respond at once, and the worker must not be assigned overlapping jobs.
 Before receiving or accepting jobs, the worker completes live identity capture
@@ -64,6 +67,7 @@ The customer can:
 10. Decide separately whether approved home photos may appear on the worker's
     profile; withdrawing consent removes the published copy.
 11. View order history.
+12. Open a support or complaint case without a Before Photo requirement.
 
 Phone verification creates an account. Before booking, the customer provides
 a name and service address and accepts the current terms. Until then the account
@@ -86,10 +90,17 @@ The customer sees the five status labels listed above. Each label must be backed
 [ADR 0007](adr/0007-phase-1-fulfillment-states.md) defines the departure,
 check-in, photo, start, finish, confirmation, cancellation and failure events.
 
+During active jobs, Cleanzza assigns a human operations duty owner to receive
+urgent cases. The first release has simple case intake and review, not a
+promised 24-hour live chat or in-app emergency call. Complaint intake is not
+conditioned on Peace of Mind photos or a blanket 24-hour cutoff. Coverage,
+escalation, response targets, and fallback must be approved before launch; see
+[ADR 0008](adr/0008-phase-1-boundaries-and-support.md).
+
 ## Details to settle before implementation
 
 - Which job details may each user see at each point in the journey, and what
   separate preview, if any, can the customer see without exposing raw evidence?
 - Which Italian tax and invoice treatment applies to each service and the platform share, and does the intended business-of-record model pass legal/provider review? ADR 0006 fixes the product payment and earnings direction but leaves these launch gates open.
 
-The [technical architecture](technical_architecture.md) records the remaining launch decisions. ADR 0004 selects EUR and Phase 1 customer-facing prices; ADR 0006 selects the payment flow, nominal split, and earnings states. Tax/invoicing, provider/legal validation, document retention, complaint eligibility, emergency behavior, and support staffing remain open. Unlisted features are not automatically excluded because this is a minimum scope.
+The [technical architecture](technical_architecture.md) records the remaining launch decisions. ADR 0004 selects EUR and Phase 1 customer-facing prices; ADR 0006 selects the payment flow, nominal split, and earnings states; ADR 0008 fixes the first-release support and excluded-feature boundary. Tax/invoicing, provider/legal validation, document retention, and support staffing/response readiness remain open launch gates.
