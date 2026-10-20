@@ -1,8 +1,10 @@
-# Worker review decisions (B07)
+# Worker review decisions and authorized actions (B07, B28)
 
 ## Scope
 
 An allowlisted, managed-MFA administrator can list workers by review state, inspect one worker's profile and private evidence references, and record an approval, rejection, dismissal, or reinstatement. The backend is authoritative for transitions and job eligibility. This feature uses synthetic identity evidence until the legal, provider, and retention gates in [ADR 0002](../adr/0002-phase-1-personal-data.md) are cleared. [ADR 0005](../adr/0005-admin-managed-mfa.md) defines administrator authentication.
+
+B28's implemented actions are dismissal and reinstatement through this same review endpoint. Fines and bonuses are deferred by [ADR 0008](../adr/0008-phase-1-boundaries-and-support.md). The decision schema accepts only the four values listed below, so `FINE` and `BONUS` return `422` without writing a decision or changing job eligibility. No financial adjustment endpoint or balance mutation exists. Amounts, appeal handling, legal basis, access, and retention must be approved before either action is designed or enabled.
 
 ## API
 
@@ -32,6 +34,8 @@ Decision JSON is `{"decision":"APPROVE","reason":"Identity and qualifications ch
 Approval and reinstatement require legal names, a Milano work profile, at least one offering, the current published worker terms version accepted, a live selfie and both document sides/pages, and a ready certificate for each Car Wash or Pet Care offering. Each linked file must be `READY`, owned by the worker, and have the expected purpose. The acting administrator must have successfully opened every current file via the one-use private-file grant flow; merely requesting a grant does not count. A reinstatement requires new reads after the dismissal decision. Missing or stale evidence returns `409` with no state change. A worker can receive work only while `APPROVED` and still accepting the current worker terms. Rejection and dismissal cannot be undone through worker profile edits; reinstatement is the only implemented route from dismissal. Re-review from `REJECTED` is not implemented.
 
 Each decision locks the worker row, records actor, reason, time, decision, resulting state, and an evidence snapshot in `cleaner_review_decisions`, and commits the state and record together. A per-actor, per-key advisory lock serializes retries. The same actor and key with the same request returns the original decision; reusing a key for a different request returns `409`. Concurrent decisions for the same worker serialize on its row and only the first valid transition succeeds. The history is append-only through the API; there is no delete route. Migration `0010_worker_review_decisions` adds the decision table and a unique actor/key constraint; rollback deletes audit history and is unsuitable after real reviews.
+
+B28's dismissal and reinstatement share these permission, audit, and retry rules. A dismissal immediately changes the server's job-eligibility projection to false; reinstatement restores it only after fresh evidence review. A repeated decision with its original key returns the same record, while a changed payload or a new conflicting transition returns `409` and leaves the audit history unchanged. The existing B07 implementation and migration provide these B28 behaviors; B28 adds explicit PostgreSQL regression coverage for the financial-action gate and dismissal/reinstatement retries.
 
 Reviewer reads and decision records contain highly sensitive metadata. Never cache review responses, log bearer tokens or raw file bytes, or expose file IDs to customer/worker screens. Retention, erasure exceptions, backups, and real-evidence access procedures remain launch gates in ADR 0002. No Auth0 tenant, live reviewer, or production evidence is provisioned by this implementation.
 
