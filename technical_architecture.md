@@ -38,8 +38,10 @@ recorded before the affected feature is implemented:
   a platform charge and later worker transfer, no wallet or off-session debit,
   and a nominal 20%/80% split; exact Italian account capabilities, provider
   contract, and legal merchant/funds-flow validation remain launch gates
-- the exact meaning of the EUR 10 cash-commission rule
-- authorization and customer consent required for any automatic debit
+- the exact meaning of the EUR 10 cash-commission rule and authorization for
+  any automatic debit before those deferred features are considered;
+  [ADR 0008](adr/0008-phase-1-boundaries-and-support.md) excludes them from
+  Phase 1
 - tax treatment, invoicing, and payment/refund execution before accepting
   real quotes; [ADR 0004](adr/0004-phase-1-pricing-direction.md) fixes the
   first gross EUR hourly price table, overtime, cancellation, no-show,
@@ -50,10 +52,11 @@ recorded before the affected feature is implemented:
   published photographs, assessment responses, backup copies, and financial
   records; [ADR 0002](adr/0002-phase-1-personal-data.md) sets the proposed
   seven-day raw service-photo rule and three-month cleaner exit review
-- the supported behavior of the emergency-call feature in each operating
-  region
-- whether restricting complaints to customers who uploaded before-service
-  photographs is legally and contractually valid
+- operating coverage, escalation, response targets, and fallback for the
+  Phase 1 human duty owner and complaint/support case; ADR 0008 selects the
+  scope but leaves these launch-readiness details open
+- the supported behavior of a future in-app emergency feature and any special
+  photo-backed guarantee before those deferred features are considered
 
 Until a decision is made, represent the rule as an explicit open decision in
 the relevant module documentation. Do not silently choose a behavior in code.
@@ -829,7 +832,8 @@ table and link it from purpose-specific entities such as `identity_documents`,
 
 # 17. Peace of Mind / Complaint Evidence
 
-Before service, a customer can activate the Peace of Mind feature.
+Peace of Mind is a deferred, separate guarantee candidate under ADR 0008.
+If it is later approved, a customer may activate it before service.
 
 If activated:
 
@@ -885,9 +889,10 @@ REJECTED
 
 Complaints should be visible to admin/support users.
 
-The product specification states that complaints may be submitted within 24
-hours after service and that Peace of Mind photographs are required. Apply that
-deadline only to the approved product complaint type; it must not silently
+The product specification describes a 24-hour, photograph-backed special
+complaint. ADR 0008 defers that guarantee and selects a general Phase 1 case
+intake without a Before Photo prerequisite or blanket 24-hour cutoff. A future
+special complaint may apply its own approved deadline; it must not silently
 close other support, safety, payment, or legally required reporting paths.
 
 ------------------------------------------------------------------------
@@ -1337,11 +1342,14 @@ The database remains authoritative.
 
 ------------------------------------------------------------------------
 
-# 32. Support Chat
+# 32. Support and later live chat
 
-The product requires always-available online support chat.
+The source product describes always-available online support chat. ADR 0008
+defers that promise from Phase 1. Phase 1 uses a simple case workflow and a
+human duty owner during active jobs, with staffing and response details gated
+before launch.
 
-For the first version, model conversations:
+For a later live-chat version, model conversations:
 
 ``` text
 support_conversations
@@ -1622,10 +1630,11 @@ holds, subject-access/export, breach response, subprocessors, and geographic
 residency. Psychological-assessment responses require an explicit necessity and
 access review; collect the minimum data required.
 
-The emergency-call feature must not promise guaranteed police contact from a
-web application. Its implementation and wording must be approved per operating
-region, degrade safely when location or telephony is unavailable, and clearly
-direct users to local emergency services.
+ADR 0008 excludes an in-app emergency-call feature from Phase 1. If later
+approved, it must not promise guaranteed police contact from a web
+application. Its implementation and wording require operating-region review,
+safe behavior when location or telephony is unavailable, and clear direction
+to local emergency services.
 
 ------------------------------------------------------------------------
 
@@ -1905,7 +1914,9 @@ below.
 -   exact cash, EUR 10, automatic-debit, refund, and payout rules
 -   price, surcharge, overtime, cancellation, no-show, and quote-calculation
     rules; requested whole-hour duration is set by ADR 0003
--   complaint eligibility and emergency-feature review
+-   Phase 1 complaint/support case boundary and active-job duty coverage;
+    [ADR 0008](adr/0008-phase-1-boundaries-and-support.md) defers the special
+    photo-backed guarantee and in-app emergency feature
 
 Produce short ADRs for these decisions. Financial, identity, and emergency
 features remain gated until their applicable decision is approved.
@@ -1985,7 +1996,8 @@ provider capabilities are complete.
 -   suspension and account-restriction workflows
 -   complaint resolution and evidence review
 -   notification preferences and operational alerts
--   support conversations plus a documented staffing/escalation model
+-   Phase 1 support case handling with documented staffing/escalation;
+    live conversations remain a later extension
 -   admin dashboards for orders, payments, complaints, and audit history
 
 ## Phase 8 --- Approved commercial extensions
