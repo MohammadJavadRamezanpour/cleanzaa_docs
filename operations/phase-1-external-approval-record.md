@@ -4,6 +4,8 @@
 
 Use the detailed [Italy tax and Stripe review checklist](italy-tax-stripe-review-checklist.md) as the question set. This record captures the written responses and the owner's resulting decisions without putting account identifiers, credentials, identity evidence, or private contracts in Git. Keep full responses in a restricted project record and put only non-sensitive references below.
 
+The [editable Phase 1 working assumptions](phase-1-working-assumptions.md) provide concrete starting values for synthetic development and owner review. They do not change any `Pending` response or clear this record's hold on real use.
+
 ## Product proposal submitted for review
 
 Cleanzza proposes a Comune di Milano launch for Home Cleaning, Car Wash, and Pet Care. [ADR 0004](../adr/0004-phase-1-pricing-direction.md) sets tax-inclusive displayed hourly totals of EUR 20, EUR 25, and EUR 20, with 1–8 whole hours per service. [ADR 0006](../adr/0006-phase-1-payment-direction.md) proposes a Stripe Connect platform charge at booking and a later worker transfer, with a nominal 20% platform and 80% worker split of the gross customer total. These are product proposals, not verified tax, invoice, merchant, or Stripe-account rules.
