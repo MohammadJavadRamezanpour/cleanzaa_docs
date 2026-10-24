@@ -167,7 +167,7 @@ Cleanzza/                 local workspace, not a Git repository
 │   ├── hooks/
 │   ├── types/
 │   ├── tests/
-│   ├── .env.example
+│   ├── .env.sample
 │   └── README.md
 ├── back/                 backend Git repository (FastAPI)
 │   ├── app/
@@ -180,7 +180,7 @@ Cleanzza/                 local workspace, not a Git repository
 │   ├── tests/
 │   ├── infra/
 │   ├── docker-compose.yml
-│   ├── .env.example
+│   ├── .env.sample
 │   └── README.md
 └── docs/                 documentation Git repository
     ├── adr/
@@ -1732,7 +1732,7 @@ SENTRY_DSN=
 Provide:
 
 ``` text
-.env.example
+.env.sample
 ```
 
 Never commit secrets.
