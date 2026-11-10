@@ -98,6 +98,14 @@ The deployment must set the auth and SMS secrets, apply the migration, and run
 the hourly auth cleanup cron. No real SMS is sent in tests; the provider
 boundary is tested with a captured HTTP request.
 
+For a disposable local booking demo only, `POST /demo/customer-session` creates
+a new synthetic customer session without SMS. It is enabled only with the
+backend local demo and draft flags, checks the request Origin and loopback
+client, returns a customer ID, role, and CSRF token with the normal HTTP-only
+session cookie, and is unavailable in staging and production. It does not
+activate a real customer or change the phone-code contract. See the
+[synthetic booking demo](order-history-foundation.md#local-synthetic-booking-and-payment-demo).
+
 ## Verification
 
 From `back/`: `.venv/bin/alembic upgrade head`, `.venv/bin/pytest -q`,

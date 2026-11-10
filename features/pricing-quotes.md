@@ -8,6 +8,10 @@ The second B09 delivery adds a server-side `DraftQuoteCalculator`, without an HT
 
 The internal draft result carries `catalog_version`, `pricing_version`, `currency`, area, service lines, total hours, gross customer total, platform share and worker amount. `tax_amount` and `tax_treatment_version` are explicitly null and `acceptance_ready` is false. The calculator does **not** infer that tax is zero or permit the result to become an accepted order snapshot. Until Italian tax/invoicing and provider/legal validation are approved, real accepted quote snapshots and booking payments remain disabled. This gate follows [ADR 0004](../adr/0004-phase-1-pricing-direction.md) and [ADR 0006](../adr/0006-phase-1-payment-direction.md).
 
+The gated draft-order command reuses this calculator when a full request is saved. It persists a versioned estimate snapshot with the draft, while keeping `acceptance_ready: false`. A retry returns that saved snapshot. The estimate cannot be accepted after saving; real acceptance requires the later reviewed tax and payment design. See [draft order creation](order-history-foundation.md#gated-draft-creation).
+
+The [local synthetic demo](order-history-foundation.md#local-synthetic-booking-and-payment-demo) can compare a customer's displayed gross amount with the saved draft and simulate a request before its 15-minute quote expiry. This is a fake-provider exercise only. The snapshot remains `acceptance_ready: false`, with null tax fields, and no real quote acceptance or charge occurs.
+
 The rules are server-owned configuration, not customer or worker input. Prices and share rates use decimal arithmetic throughout. Invalid inputs raise `QuoteInputInvalid`; missing or incoherent version rows raise `PriceRuleUnavailable`. No transaction writes or asynchronous effects occur in calculation.
 
 ## Public draft API

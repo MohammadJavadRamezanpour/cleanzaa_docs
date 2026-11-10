@@ -25,12 +25,15 @@ referrals, support chat, service evidence photos, and operational rules.
 
 ## 1.1 Specification status and unresolved product decisions
 
-**Confirmed launch country:** Italy. Any expansion to other countries requires
-a separate review of currency, operations, and applicable rules.
+**Demo setting:** Milano, Italy. ADR 0009 makes the Phase 1 deliverable a
+synthetic product demo. A later live launch and any expansion require separate
+review of currency, operations, and applicable rules.
 
 This document defines the technical direction, but it must not be used to
 invent unresolved business or legal policy. The following decisions must be
-recorded before the affected feature is implemented:
+recorded before the affected feature is enabled for real users, money,
+identity collection, or service delivery. They do not block isolated synthetic
+demo implementation under [ADR 0009](adr/0009-phase-1-demo-target.md):
 
 - applicable Italian and EU privacy, employment, marketplace, tax, and payment
   requirements; [ADR 0004](adr/0004-phase-1-pricing-direction.md) selects EUR
@@ -58,8 +61,10 @@ recorded before the affected feature is implemented:
 - the supported behavior of a future in-app emergency feature and any special
   photo-backed guarantee before those deferred features are considered
 
-Until a decision is made, represent the rule as an explicit open decision in
-the relevant module documentation. Do not silently choose a behavior in code.
+Until a live-use decision is made, represent it as an explicit open decision in
+the relevant module documentation. Demo code may use a labeled, reversible
+assumption with fake providers and separate state; it must not claim the live
+decision is approved.
 
 ### Engineering principle
 
@@ -922,7 +927,7 @@ flow. Cleanzza must not store raw card details or online-banking credentials.
 Store provider customer, payment-method, connected-account, payment, refund,
 and payout identifiers.
 
-Before implementation, document:
+Before real payment implementation, document:
 
 - when payment is authorized and captured
 - whether an off-session charge is permitted and how customer consent is
@@ -1903,8 +1908,8 @@ depend on it.
 Implement vertical slices in this order. Each phase must satisfy the relevant
 definition of done and leave a deployable, observable system.
 These are engineering implementation phases, not product release numbers. The
-[Phase 1 product release](phase_1_product_scope.md) spans the relevant slices
-below.
+[Phase 1 product demo](phase_1_product_scope.md) may implement a simpler
+synthetic path through the relevant slices without completing live-use gates.
 
 ## Phase 0 --- Resolve launch-critical decisions
 
@@ -1918,8 +1923,9 @@ below.
     [ADR 0008](adr/0008-phase-1-boundaries-and-support.md) defers the special
     photo-backed guarantee and in-app emergency feature
 
-Produce short ADRs for these decisions. Financial, identity, and emergency
-features remain gated until their applicable decision is approved.
+Produce short ADRs for live-use decisions. Real financial, identity, and
+emergency features remain gated until their applicable decision is approved.
+Synthetic Phase 1 demo behavior follows ADR 0009 and can proceed now.
 
 ## Phase 1 --- Foundation and security baseline
 
@@ -2093,9 +2099,11 @@ relevant module documentation.
 
 ### Rule 11 --- Do not invent product policy
 
-If a rule listed in Section 1.1 remains unresolved, stop implementation of the
-affected behavior and record the decision needed. Do not convert ambiguous
-prose into financial, legal, safety, or account-blocking behavior.
+If a rule listed in Section 1.1 remains unresolved, stop implementation of
+the affected **real-use** behavior and record the decision needed. Continue
+isolated synthetic demo work under ADR 0009 with a documented assumption.
+Do not convert ambiguous prose into real financial, legal, safety, or
+account-blocking behavior.
 
 ### Rule 12 --- Preserve module ownership
 

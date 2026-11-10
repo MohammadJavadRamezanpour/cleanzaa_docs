@@ -2,6 +2,8 @@
 
 **Status:** Product direction approved by the owner on 2026-10-19. Italian legal, tax, Stripe account/capability, and contract review remain launch gates before real quotes or payments.
 
+**Phase 1 application:** [ADR 0009](0009-phase-1-demo-target.md) replaces the first live-release target with a synthetic demo. Use fake payment outcomes for that demo; the Stripe Connect flow below remains a direction for a later live launch.
+
 ## Decision
 
 Use Stripe Connect for one EUR card payment at booking. Cleanzza is the intended business of record for the customer charge. The worker is unknown when the booking payment is created, so use a platform charge followed by a separate transfer to the assigned worker's connected account after customer confirmation or a recorded support resolution. The platform does not create an internal wallet, advertise an escrow service, or store raw card or bank details. Stripe-hosted connected-account onboarding collects payout/KYC details; Cleanzza stores opaque provider IDs and payout capability status. Select the exact Stripe account API and configuration after validating the current Italian account capabilities, liability, service agreement, and contract terms with Stripe.

@@ -96,12 +96,16 @@ The page includes an **I need cleaning** option. After selecting it, the custome
 8. Indicate whether cleaning equipment or supplies are required.
 9. Start the search so the system can intelligently match the request with a cleaner.
 
-For the Phase 1 launch, the customer selects a Milano address and a whole-hour
+For the Phase 1 synthetic demo, the customer selects an example Milano address and a whole-hour
 duration of 1–8 hours for each selected service. Home Cleaning asks for the
 worker level, parts/rooms, and room count; Car Wash asks for car make/model;
 Pet Care asks for dog/cat and breed. Each service asks separately whether the
 worker must bring equipment and supplies. The full field and matching contract
 is in [ADR 0003](adr/0003-phase-1-launch-services.md).
+
+The full product description is a future product direction. The current
+[Phase 1 scope](phase_1_product_scope.md) is a synthetic demonstration; no
+real service or payment is offered through it.
 
 The customer profile also includes:
 

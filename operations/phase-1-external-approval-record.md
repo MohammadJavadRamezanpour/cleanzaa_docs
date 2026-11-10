@@ -1,6 +1,6 @@
 # Phase 1 external approval record
 
-**Status:** Open review template. No Italian tax/legal conclusion or account-specific Stripe approval has been received or recorded here. This document does not authorize real quotes, bookings, charges, transfers, or identity collection.
+**Status:** Open review template for a later live launch. Phase 1 is a synthetic demo under [ADR 0009](../adr/0009-phase-1-demo-target.md); no entry here is required to complete that demo. No Italian tax/legal conclusion or account-specific Stripe approval has been received or recorded here. This document does not authorize real quotes, bookings, charges, transfers, or identity collection.
 
 Use the detailed [Italy tax and Stripe review checklist](italy-tax-stripe-review-checklist.md) as the question set. This record captures the written responses and the owner's resulting decisions without putting account identifiers, credentials, identity evidence, or private contracts in Git. Keep full responses in a restricted project record and put only non-sensitive references below.
 
@@ -34,7 +34,7 @@ Cleanzza proposes a Comune di Milano launch for Home Cleaning, Car Wash, and Pet
 | Transfer and payout timing, restricted accounts, refunds, reversals, disputes, and reconciliation | Pending |
 | Controlled test-mode walkthrough and account-specific written response reference | Pending |
 
-## Other Phase 1 launch gates
+## Other later live-launch gates
 
 The payment review does not clear these separate gates:
 
@@ -48,6 +48,6 @@ The payment review does not clear these separate gates:
 
 ## Owner decision and implementation handoff
 
-**Current decision:** Hold real acceptance, order submission, payment, payout, and production identity collection. Draft quotes remain `acceptance_ready: false`; the existing order table permits `DRAFT` only.
+**Current decision:** Build and review the synthetic Phase 1 demo now. Hold real acceptance, order submission, payment, payout, and production identity collection for a later live release. Draft quotes remain `acceptance_ready: false`; the existing order table permits `DRAFT` only.
 
 When written responses arrive, the Cleanzza owner records the response references, decision date, approvers, accepted assumptions, unresolved exceptions, and effective date here. If the proposed model changes, update ADRs 0004 and 0006, the product scope, relevant Trello cards, and the API/feature contracts before implementing acceptance. Implement and test the approved quote snapshot, order, payment, and payout path in dependency order, then complete staging and operational verification. Do not mark this gate cleared solely because this template exists or a local `.env` file has been populated.
