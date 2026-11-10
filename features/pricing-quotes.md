@@ -10,6 +10,8 @@ The internal draft result carries `catalog_version`, `pricing_version`, `currenc
 
 The gated draft-order command reuses this calculator when a full request is saved. It persists a versioned estimate snapshot with the draft, while keeping `acceptance_ready: false`. A retry returns that saved snapshot. The estimate cannot be accepted after saving; real acceptance requires the later reviewed tax and payment design. See [draft order creation](order-history-foundation.md#gated-draft-creation).
 
+The [local synthetic demo](order-history-foundation.md#local-synthetic-booking-and-payment-demo) can compare a customer's displayed gross amount with the saved draft and simulate a request before its 15-minute quote expiry. This is a fake-provider exercise only. The snapshot remains `acceptance_ready: false`, with null tax fields, and no real quote acceptance or charge occurs.
+
 The rules are server-owned configuration, not customer or worker input. Prices and share rates use decimal arithmetic throughout. Invalid inputs raise `QuoteInputInvalid`; missing or incoherent version rows raise `PriceRuleUnavailable`. No transaction writes or asynchronous effects occur in calculation.
 
 ## Public draft API

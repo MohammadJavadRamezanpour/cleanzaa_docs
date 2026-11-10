@@ -32,7 +32,8 @@ Stripe describes separate charges and transfers as a platform charge followed by
 1. Complete deterministic draft-quote and order-draft behavior, including versioned snapshots and PostgreSQL tests. A draft cannot become a real accepted order or matching request.
 2. Define and test payment/fulfillment transitions with fake provider events and synthetic users, keeping any public booking, charge, transfer and identity-capture path disabled.
 3. Add Stripe test-mode integration only after Cleanzza has provisioned the relevant account and test credentials. Capture the walkthrough and open questions in the restricted project record.
-4. Keep customer-visible copy accurate: show a draft price and disabled submission until the external gates are closed. Do not display provisional tax or worker-payout figures as finalized.
+4. The owner has requested a local synthetic website journey that simulates quote confirmation, service request, payment, cancellation, and refund. Label every outcome as a demo, keep real order state `DRAFT`, and make no Stripe call or tax assertion. Enable it only with explicit local flags and disposable data; production builds and staging/production APIs must keep the path off. See the [implemented demo contract](../features/order-history-foundation.md#local-synthetic-booking-and-payment-demo).
+5. Keep real customer-visible copy accurate: a draft price is an estimate and live submission stays disabled until the external gates are closed. Do not display provisional tax or worker-payout figures as finalized.
 
 ## Owner edit and approval path
 
