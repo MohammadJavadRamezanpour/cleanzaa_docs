@@ -1,106 +1,34 @@
-# Phase 1 Product Scope
+# Phase 1 Product Scope — Demo
 
-**Launch country and area:** Italy; Comune di Milano only (ADR 0003)
+**Decision:** Phase 1 is a working, synthetic product demo, as recorded in [ADR 0009](adr/0009-phase-1-demo-target.md). It is not a public service launch. The Next.js frontend and FastAPI backend remain separate repositories.
 
-**Pricing direction:** EUR hourly gross prices and booking policies in [ADR 0004](adr/0004-phase-1-pricing-direction.md); accepted real quotes remain gated by tax, legal and provider validation.
+**Setting:** Example requests use Comune di Milano and the three catalogue services: Home Cleaning, Car Wash, and Pet Care. The EUR hourly amounts in [ADR 0004](adr/0004-phase-1-pricing-direction.md) are demo examples. Tax treatment is unknown. The nominal 20%/80% split in [ADR 0006](adr/0006-phase-1-payment-direction.md) may appear only as simulated accounting.
 
-**Payment direction:** One card charge at booking through Stripe Connect, with Cleanzza intended as business of record and a nominal 20%/80% platform/worker split. [ADR 0006](adr/0006-phase-1-payment-direction.md) sets the product rule; Italian tax/legal, provider approval and invoicing remain gates before real acceptance or payment.
+## Demo success criteria
 
-**Support and feature boundary:** [ADR 0008](adr/0008-phase-1-boundaries-and-support.md) includes simple complaint/support cases and a human duty owner during active jobs. Cash, wallet, referrals, rewards, in-app emergency call, automatic penalties, and guaranteed live chat are deferred. Staffing and response arrangements remain a launch gate.
+A reviewer can complete the main story on a working website without a real phone number, worker identity document, card, or service appointment:
 
-**Status:** Confirmed feature scope; operating and payment rules linked below remain open.
+1. Start as a synthetic customer, choose a launch service, enter an example Milano address and schedule, and see a versioned example price.
+2. Save and submit a demo request. The website records a retry-safe simulated payment outcome and shows the request in customer history. Cancelling a demo request produces a simulated refund outcome.
+3. Open a synthetic cleaner view. A preapproved example cleaner sees a privacy-limited offer, accepts it once, and then sees the example job details. Assignment and schedule conflicts are handled consistently in the demo.
+4. Move the job through Requested, Accepted, On the Way, In Progress, and Completed. The cleaner can simulate travel, check-in, Before/After evidence, and completion; the customer can see the status and confirm completion. Evidence is clearly fake or placeholder content, never a real home image or identity capture.
+5. Show simulated cleaner earnings and payout state, customer rating/feedback, and both parties' relevant history. A simple synthetic support case may be shown without promising live staff or a response time.
+6. Let the reviewer repeat the story with fresh synthetic data. The UI clearly states that no worker is dispatched, no service is booked, and no card is charged.
 
-This is the customer- and worker-facing scope for the first product release. “Worker” here refers to the **cleaner** role used in the [technical architecture](technical_architecture.md). The architecture's numbered implementation phases describe build order; they are not product release numbers.
+The backend remains authoritative for demo ownership, status, amount, idempotency, and one-cleaner assignment. Ordinary requests or polling are sufficient; real-time transport, optimization, and elaborate ranking are unnecessary. Feature documents and tests should describe the behavior actually implemented. A demo is complete only when the full story above can be run and verified; a screen or Trello card alone is not proof.
 
-The Next.js frontend and FastAPI backend are developed in separate Git
-repositories and deployed independently.
+## Implementation boundary
 
-## Worker app
+- Use a fake provider for capture, refund, transfer, and payout displays. Stripe test mode is optional and cannot block the demo. Live Stripe charges and connected-account onboarding are outside Phase 1.
+- Use synthetic customer and cleaner identities, example addresses, and placeholder service evidence. Production collection of identity documents, selfies, and real service photos is outside Phase 1.
+- Demo quote snapshots may retain `acceptance_ready: false` and unknown tax fields. Simulated submission must be distinguishable from real accepted quotes and orders. Never present a VAT rate, invoice, legal relationship, or worker net amount as approved.
+- Keep demo data separate from real fulfillment and payment records. Enable synthetic actions only in explicit local or controlled demo environments; any hosted preview needs access control or equivalent creation limits and clear demo copy.
+- User authorization, ownership, retry safety, concurrency checks, API contracts, and meaningful tests still apply. The [development rules](development_rules.md) describe the practical demo workflow.
 
-The worker can:
+The companion local demo code covers customer demo sign-in, draft quote/request, simulated payment, cancellation/refund, and draft history. It does **not yet** cover the synthetic cleaner assignment and completion story above. [The order-history feature contract](features/order-history-foundation.md) describes that implemented slice.
 
-1. Sign up or register.
-2. Create a profile.
-3. Select the services they provide.
-4. Add work experience.
-5. Upload certificates or evidence of skills.
-6. View available job requests.
-7. Accept a job.
-8. View the accepted job's address and details.
-9. Check in at the job.
-10. Take a Before Photo.
-11. Perform the job.
-12. Take an After Photo.
-13. Complete or end the job.
-14. View earnings.
-15. View their rating.
-16. Show approved completed-work highlights on their profile, with home photos
-    only when the homeowner has separately consented to publication.
-17. Open a support or complaint case about an active or completed job.
+## Later live product
 
-The full customer address and private details become available only after the worker accepts the job. Job acceptance must remain safe when multiple workers respond at once, and the worker must not be assigned overlapping jobs.
-Before receiving or accepting jobs, the worker completes live identity capture
-and service-qualification review and is manually approved by an authorized
-administrator. Service photos can be captured and submitted but their stored
-originals are visible only to authorized administrators and case-scoped support.
-Worker registration and sign-in use a single-use phone code and revocable
-session. The worker remains pending until required profile data, private
-identity evidence, qualifications, and published worker terms acceptance are
-reviewed and approved. [ADR 0003](adr/0003-phase-1-launch-services.md) sets the
-Milano service-area choice and service-specific qualifications. Production
-collection of real identity evidence remains subject to ADR 0002's legal,
-retention, and provider gates.
+The earlier customer and cleaner feature lists remain product ideas for a future release: verified phone onboarding, profile and terms activation, live cleaner identity/qualification approval, real service photos, staffed support, real booking, Stripe payment and payout, data rights, and operational launch. [ADRs 0002–0008](adr/) preserve those directions and their unresolved decisions. They do not block synthetic Phase 1 implementation.
 
-## Customer app
-
-The customer can:
-
-1. Sign up or log in.
-2. Select **Home Cleaning**, **Car Wash**, or **Pet Care**.
-3. Select a date, time, address, and service type.
-4. View the price before submitting a request.
-5. Submit a service request.
-6. View the order status: **Requested**, **Accepted**, **On the Way**, **In Progress**, or **Completed**.
-7. View the assigned worker's information.
-8. Confirm the completed service.
-9. Rate the worker and record satisfaction feedback.
-10. Decide separately whether approved home photos may appear on the worker's
-    profile; withdrawing consent removes the published copy.
-11. View order history.
-12. Open a support or complaint case without a Before Photo requirement.
-
-Phone verification creates an account. Before booking, the customer provides
-a name and service address and accepts the current terms. Until then the account
-is pending activation and cannot place an order. See
-[ADR 0002](adr/0002-phase-1-personal-data.md) for the Phase 1 data policy.
-The launch catalogue permits only Milano addresses and requires whole-hour
-duration (1–8 hours) and the service-specific fields in
-[ADR 0003](adr/0003-phase-1-launch-services.md). Unsupported cities cannot be
-quoted or booked.
-
-## Main journey
-
-1. The customer chooses one of the three services, supplies the booking details, sees a price, and submits the request.
-2. Eligible workers see a job request. One worker accepts it, and the customer sees who was assigned.
-3. The worker travels to the job, checks in, and takes a Before Photo.
-4. The worker performs the job, takes an After Photo, and marks the job complete.
-5. The customer confirms completion and can rate the worker without access to raw service photos. Both users can review the permitted history; the worker can view earnings and rating. An approved, anonymized photo may appear on the worker's profile only with the homeowner's separate consent.
-
-The customer sees the five status labels listed above. Each label must be backed by a defined server-side event or state; the UI alone cannot declare a job accepted, in progress, or completed.
-[ADR 0007](adr/0007-phase-1-fulfillment-states.md) defines the departure,
-check-in, photo, start, finish, confirmation, cancellation and failure events.
-
-During active jobs, Cleanzza assigns a human operations duty owner to receive
-urgent cases. The first release has simple case intake and review, not a
-promised 24-hour live chat or in-app emergency call. Complaint intake is not
-conditioned on Peace of Mind photos or a blanket 24-hour cutoff. Coverage,
-escalation, response targets, and fallback must be approved before launch; see
-[ADR 0008](adr/0008-phase-1-boundaries-and-support.md).
-
-## Details to settle before implementation
-
-- Which job details may each user see at each point in the journey, and what
-  separate preview, if any, can the customer see without exposing raw evidence?
-- Which Italian tax and invoice treatment applies to each service and the platform share, and does the intended business-of-record model pass legal/provider review? ADR 0006 fixes the product payment and earnings direction but leaves these launch gates open.
-
-The [technical architecture](technical_architecture.md) records the remaining launch decisions. ADR 0004 selects EUR and Phase 1 customer-facing prices; ADR 0006 selects the payment flow, nominal split, and earnings states; ADR 0008 fixes the first-release support and excluded-feature boundary. Tax/invoicing, provider/legal validation, document retention, and support staffing/response readiness remain open launch gates.
+Before any real customer request, worker dispatch, payment, payout, or identity collection is enabled, the owner must separately resolve the [tax, legal, Stripe, privacy, hosting, and support record](operations/phase-1-external-approval-record.md) and approve a live release plan. The demo does not imply those decisions have been made.
