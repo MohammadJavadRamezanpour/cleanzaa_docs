@@ -21,6 +21,9 @@ role. Phone and IP rate limits remain shared across both paths. The separate
 [worker phone/profile slice](worker-phone-profile.md) reuses this session model.
 
 The Phase 1 data scope comes from [ADR 0002](../adr/0002-phase-1-personal-data.md).
+The protected synthetic preview's no-SMS alternative is documented in
+[controlled demo phone login](demo-phone-login.md); it does not verify possession
+of a phone number.
 
 ## API contract
 
