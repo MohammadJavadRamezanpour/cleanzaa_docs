@@ -1110,17 +1110,39 @@ Keep scoring rules configurable in code so they can evolve.
 
 # 25. Referrals
 
-Two referral concepts exist:
+Two referral concepts exist and must stay separate:
 
 ### Customer introduces an existing cleaner
 
 The customer receives commission for services completed by the referred
-cleaner.
+cleaner. Not implemented; still deferred by
+[ADR 0008](adr/0008-phase-1-boundaries-and-support.md).
 
 ### Customer refers another customer
 
 The referring customer receives rewards based on referred customer
-orders/payments.
+orders/payments. Only attribution is implemented in the storage-only slice
+described in [customer referrals](features/customer-referrals.md); rewards,
+commission, and qualification events are not.
+
+The implemented schema is:
+
+``` text
+referral_codes
+  code            primary key
+  customer_id     unique -> customers
+  created_at
+
+customer_referrals
+  referee_customer_id   primary key -> customers
+  referrer_customer_id  -> customers
+  code                  -> referral_codes
+  created_at
+```
+
+One permanent code per customer, one referrer per new customer, and a check
+constraint against self-referral. Attribution is written only when a phone
+first creates a customer account, inside the same transaction.
 
 Keep these separate:
 

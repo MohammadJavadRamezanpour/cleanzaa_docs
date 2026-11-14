@@ -6,7 +6,7 @@
 
 **Payment direction:** One card charge at booking through Stripe Connect, with Cleanzza intended as business of record and a nominal 20%/80% platform/worker split. [ADR 0006](adr/0006-phase-1-payment-direction.md) sets the product rule; Italian tax/legal, provider approval and invoicing remain gates before real acceptance or payment.
 
-**Support and feature boundary:** [ADR 0008](adr/0008-phase-1-boundaries-and-support.md) includes simple complaint/support cases and a human duty owner during active jobs. Cash, wallet, referrals, rewards, in-app emergency call, automatic penalties, and guaranteed live chat are deferred. Staffing and response arrangements remain a launch gate.
+**Support and feature boundary:** [ADR 0008](adr/0008-phase-1-boundaries-and-support.md) includes simple complaint/support cases and a human duty owner during active jobs. Cash, wallet, referral rewards, in-app emergency call, automatic penalties, and guaranteed live chat are deferred. A storage-only customer-referral attribution slice is included under the ADR 0008 amendment: it records who invited whom and pays nothing. Staffing and response arrangements remain a launch gate.
 
 **Status:** Confirmed feature scope; operating and payment rules linked below remain open.
 

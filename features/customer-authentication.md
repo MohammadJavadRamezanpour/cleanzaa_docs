@@ -33,11 +33,17 @@ present, must match a configured CORS origin.
 | Method and path | Request | Success | Access and errors |
 | --- | --- | --- | --- |
 | `POST /auth/customer/request-otp` | `{"phone":"+393331234567"}` | `202 {"status":"sent"}` | Public; `403` disallowed Origin, `422` invalid phone, `429` request limit with `Retry-After: 60`, `503` unavailable configuration, database, or SMS provider. Same response for new and existing accounts. |
-| `POST /auth/customer/verify-otp` | `{"phone":"+393331234567","code":"123456"}` | `200 {"user_id":"<UUID>","role":"CUSTOMER","csrf_token":"<opaque>"}` and session cookie | Public; `401` wrong, expired, exhausted, or reused code; `403` disallowed Origin; `422` malformed input; `503` missing backend configuration. |
+| `POST /auth/customer/verify-otp` | `{"phone":"+393331234567","code":"123456"}` or the same body plus an optional `"referral_code":"ABCD2345"` | `200 {"user_id":"<UUID>","role":"CUSTOMER","csrf_token":"<opaque>"}` and session cookie | Public; `401` wrong, expired, exhausted, or reused code; `403` disallowed Origin; `422` malformed input or a `referral_code` longer than 32 characters; `503` missing backend configuration. |
 | `GET /me` | No body; `cleanzza_session` cookie | `200 {"user_id":"<UUID>","roles":["CUSTOMER"],"csrf_token":"<opaque>"}` | Any authenticated role; `401` invalid/expired/revoked session; `503` missing backend configuration. |
 | `GET /auth/customer/session` | No body; session cookie | `200` with the same fields as verify | `401` invalid session; `403` user lacks `CUSTOMER` role; `503` missing backend configuration. |
 | `POST /auth/session/refresh` | Session cookie plus `X-CSRF-Token` from `/me` or prior auth response | `200 {"csrf_token":"<new opaque>"}` and rotated session cookie | `401` invalid/expired session; `403` invalid/missing CSRF token or disallowed Origin; `503` missing backend configuration. |
 | `POST /auth/logout` | Session cookie plus `X-CSRF-Token` | `204` and cookie deletion | `401` invalid/expired session; `403` invalid/missing CSRF token or disallowed Origin; `503` missing backend configuration. Revokes the current device session only. |
+
+`referral_code` is optional and only records a
+[customer referral](customer-referrals.md) when this call creates a new
+customer account. It is ignored for existing accounts, for cleaner signups,
+and for unknown or malformed values, and it never changes the success or
+failure of verification.
 
 Phones must arrive in canonical E.164 form (`+` followed by 8–15 digits) and
 are uniquely constrained in `users`; other formats are rejected rather than
