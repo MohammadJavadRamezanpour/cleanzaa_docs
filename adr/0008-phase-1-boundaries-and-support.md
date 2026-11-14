@@ -14,7 +14,7 @@ The case intake may be asynchronous. Phase 1 does not promise 24-hour live chat 
 
 - Cash collection and the EUR 10 cash-commission/debt rule.
 - Customer balance, top-up, internally custodied wallet, and payout wallet.
-- Customer and worker referrals, rewards, and repeat-worker discounts or surcharges.
+- Customer and worker referral rewards, commission, and repeat-worker discounts or surcharges. Customer-to-customer referral *attribution* is no longer deferred; see the amendment below.
 - In-app emergency-call, police contact, or location-sharing feature.
 - Always-available live support chat and any guaranteed response SLA.
 - Automatic fines, cancellation penalties, bonuses, or other off-session debits.
@@ -26,3 +26,25 @@ These are explicit later-phase candidates, not silently discarded product ideas.
 The first release needs one case workflow and an operational queue/owner before active paid jobs begin. The backend will own case authorization, state, audit history, and any linkage to order or payout decisions. A support agent cannot create an automatic refund, penalty, or transfer from a free-text case alone. The exact case statuses and response workflow are implementation details to define in the case feature document, consistent with this ADR. Before launch, record the operating owner, staffing schedule, coverage during all active jobs, escalation and fallback channels, customer/worker contact wording, response targets, privacy retention, and a rehearsal of an urgent case. Until these are approved, do not advertise live or guaranteed support.
 
 This decision resolves D6's Phase 1 feature boundary. It does not clear Italian tax, invoicing, payment-provider, identity-data, or production support-readiness gates recorded elsewhere.
+
+## Amendment (2026-11-14)
+
+The owner approved a narrow customer-referral slice: a customer may have one
+permanent invite code, and the backend records who invited a new customer at
+account creation. That record is storage only, per
+[customer referrals](../features/customer-referrals.md).
+
+Still deferred, and requiring their own product, legal, economic, and provider
+decisions before implementation:
+
+- rewards, commission, bonuses, wallet credit, or any payout derived from a
+  referral
+- qualification rules such as a first completed or paid order
+- link expiry, rotation, or revocation and per-campaign codes
+- customer → cleaner and cleaner → cleaner referrals
+- duplicate-account and household-level fraud detection
+- telling either party who was referred, or any referral dashboard beyond the
+  referrer's own count
+
+No referral may be advertised as earning money until those decisions are
+recorded.
