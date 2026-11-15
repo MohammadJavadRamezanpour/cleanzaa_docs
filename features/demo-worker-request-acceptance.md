@@ -15,7 +15,7 @@ The backend owns this state. A PostgreSQL row lock permits only one accepting wo
 
 Migration `0018_demo_worker_acceptance` adds nullable accepted worker user ID, acceptance timestamp, and retry key to `demo_bookings`. Its check constraint permits `REQUESTED`, `ACCEPTED`, and `CANCELLED` only with matching fake payment and timestamp fields. Existing requests keep their prior state and become visible in the queue if their start is still future. Downgrade refuses to remove an accepted worker record. The customer history and detail APIs show `ACCEPTED` and `accepted_at` on the synthetic booking; the customer can still simulate cancellation before the scheduled start. Cancelled requests leave the worker inbox. No real order event, transfer, payout, or message is created.
 
-The frontend worker page links to the demo inbox after worker sign-in. The inbox can be refreshed manually and confirms acceptance without claiming a real job. The worker login uses the on-screen demo code; no SMS is sent. Use synthetic addresses and identities only. The host preview remains access controlled, and the backend rejects the demo flag in production.
+The frontend worker page links to the demo inbox after worker sign-in. The inbox can be refreshed manually and confirms acceptance without claiming a real job. A customer can simulate submission from a still-valid saved draft in `/orders`; an expired price requires a fresh draft in `/book`. The worker login uses the on-screen demo code; no SMS is sent. Use synthetic addresses and identities only. The host preview remains access controlled, and the backend rejects the demo flag in production.
 
 ## Verification
 
