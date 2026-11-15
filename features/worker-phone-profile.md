@@ -12,7 +12,7 @@ Phone verification alone does **not** grant job eligibility. The response
 returns `job_eligible: true` only after the separate
 [review decision](worker-review-decisions.md) approves the worker and the
 current terms version remains accepted. Private certificate storage and a test-file upload
-screen exist under B06; B05 adds editable services, Milano area, experience,
+screen exist under B06; B05 adds editable Home Cleaning service, Ferrara area, experience,
 equipment/supplies declarations, and certificate association. Live identity
 capture now uses the [private evidence status](worker-identity-evidence.md)
 flow. Versioned [worker terms acceptance](worker-terms-acceptance.md) is now

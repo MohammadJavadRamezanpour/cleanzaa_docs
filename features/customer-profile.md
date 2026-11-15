@@ -38,7 +38,7 @@ The profile response shape is:
 ```json
 {
   "name": "Ada Rossi",
-  "service_address": "Via Roma 1, Milano",
+  "service_address": "Via Roma 1, Ferrara",
   "accepted_terms_version": "2026-10-17",
   "accepted_terms_at": "2026-10-17T08:30:10+00:00",
   "current_terms_version": "2026-10-17",

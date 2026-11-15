@@ -14,10 +14,13 @@ Request; convenience is not an exception.
 
 `docs/technical_architecture.md` remains authoritative for system architecture,
 domain boundaries, security, data handling, and implementation sequencing.
-`docs/product_description.md` remains the source product description. If these
-documents conflict or an unresolved product decision affects implementation,
-stop the affected work, resolve the decision, and update the relevant documents
-together. Do not silently choose one interpretation.
+`docs/product_description.md` remains the source product description.
+`docs/phase_1_product_scope.md` and ADR 0009 set the current **synthetic demo**
+deliverable. Unresolved live-use decisions do not stop isolated demo behavior.
+If an unresolved decision affects the demo itself, record a clear, reversible
+assumption and proceed when its effect is confined to synthetic data. Resolve
+material conflicts before enabling behavior for real users, money, identity
+collection, or service delivery.
 
 ## 0. Repository baseline
 
@@ -287,9 +290,11 @@ another implementation is personally preferable.
 Preserve user changes and unrelated work already present in the working tree.
 Do not revert, overwrite, or reformat unrelated files.
 
-Do not use a feature request to silently resolve an open product, legal,
-financial, privacy, or safety decision. Follow the gates in Section 1.1 of
-`docs/technical_architecture.md`.
+Do not use a feature request to silently resolve an open legal, financial,
+privacy, or safety decision for real use. For the Phase 1 demo, implement the
+synthetic journey under ADR 0009 with explicit labels, fake integrations, and
+separate demo state. Section 1.1 of `docs/technical_architecture.md` gates
+real use; it does not require external sign-off to build an isolated demo.
 
 ---
 
@@ -555,7 +560,10 @@ reasonable decision, document it where future contributors need it, and
 proceed.
 
 Unresolved items listed in Section 1.1 of `docs/technical_architecture.md` are
-explicit gates, not invitations to select a convenient interpretation.
+gates for real use. For the Phase 1 demo, choose the smallest reversible
+synthetic behavior consistent with ADR 0009, document the assumption, and
+continue. Ask only when an ambiguity would change the demo's essential story,
+expose real data or money, or make the separation from live behavior unclear.
 
 ## 21. Definition of Done
 
