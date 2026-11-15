@@ -20,6 +20,8 @@ available when approved terms are configured. No job-offer or job-acceptance API
 exists. Real identity evidence remains subject to
 [ADR 0002](../adr/0002-phase-1-personal-data.md); service choices follow
 [ADR 0003](../adr/0003-phase-1-launch-services.md).
+The protected synthetic preview can use [controlled demo phone login](demo-phone-login.md)
+without SMS; that sign-in does not establish phone ownership or worker approval.
 
 ## API contract
 
