@@ -2,7 +2,7 @@
 
 ## Purpose and scope
 
-B11 provides draft order persistence, attributed history, customer history endpoints, and a draft-history screen. Migration `0015_order_draft_details` and a gated command let a signed-in customer save a validated service request and its server-calculated draft price in local or controlled demo environments. A separate synthetic demo can simulate submission, payment, cancellation, and refund against that draft. It cannot reserve a worker, start a real payment, or issue an offer. Real booking remains gated by the reviewed tax, invoicing, legal, and Stripe decisions in [ADR 0010](../adr/0010-ferrara-home-cleaning-pilot.md). The [review checklist](../operations/italy-tax-stripe-review-checklist.md) lists the written answers still required.
+B11 provides draft order persistence, attributed history, customer history endpoints, and a draft-history screen. Migration `0015_order_draft_details` and a gated command let a signed-in customer save a validated service request and its server-calculated draft price in local or controlled demo environments. A separate synthetic demo can simulate submission, payment, cancellation, and refund against that draft. A signed-in demo worker can now see a privacy-limited request and accept it once; customer history then shows `ACCEPTED`. See [worker request acceptance](demo-worker-request-acceptance.md). It cannot reserve a worker, start a real payment, or issue an offer. Real booking remains gated by the reviewed tax, invoicing, legal, and Stripe decisions in [ADR 0010](../adr/0010-ferrara-home-cleaning-pilot.md). The [review checklist](../operations/italy-tax-stripe-review-checklist.md) lists the written answers still required.
 
 ## Database contract
 
