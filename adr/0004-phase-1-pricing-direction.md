@@ -2,6 +2,10 @@
 
 **Status:** Product direction approved by the owner's 2026-10-18 delegation to choose the simplest pricing recommendation. ADR 0006 sets the nominal merchant/payment/commission direction; tax, legal and provider validation remain launch gates.
 
+**Phase 1 application:** Under [ADR 0009](0009-phase-1-demo-target.md), these rates and policies are synthetic demo examples. The gates below apply before a later live launch, not before the demo.
+
+**Superseded for the active Phase 1 demo by [ADR 0010](0010-ferrara-home-cleaning-pilot.md).** The `milano-hourly-v1` rule remains historical and must not be reused as the Ferrara price policy.
+
 ## Customer-facing price
 
 Use EUR and a versioned `milano-hourly-v1` price table. Each selected service has its own whole-hour duration from 1 through 8, as in ADR 0003. The quoted service window is the sum of those hours, scheduled contiguously. Prices below are **customer totals per hour**, with any applicable tax included. The customer never sees an extra tax added at checkout.

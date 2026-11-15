@@ -1,6 +1,6 @@
 # Phase 1 external approval record
 
-**Status:** Open review template. No Italian tax/legal conclusion or account-specific Stripe approval has been received or recorded here. This document does not authorize real quotes, bookings, charges, transfers, or identity collection.
+**Status:** Open review template for a later live launch. Phase 1 is a synthetic demo under [ADR 0009](../adr/0009-phase-1-demo-target.md); no entry here is required to complete that demo. No Italian tax/legal conclusion or account-specific Stripe approval has been received or recorded here. This document does not authorize real quotes, bookings, charges, transfers, or identity collection.
 
 Use the detailed [Italy tax and Stripe review checklist](italy-tax-stripe-review-checklist.md) as the question set. This record captures the written responses and the owner's resulting decisions without putting account identifiers, credentials, identity evidence, or private contracts in Git. Keep full responses in a restricted project record and put only non-sensitive references below.
 
@@ -8,7 +8,7 @@ The [editable Phase 1 working assumptions](phase-1-working-assumptions.md) provi
 
 ## Product proposal submitted for review
 
-Cleanzza proposes a Comune di Milano launch for Home Cleaning, Car Wash, and Pet Care. [ADR 0004](../adr/0004-phase-1-pricing-direction.md) sets tax-inclusive displayed hourly totals of EUR 20, EUR 25, and EUR 20, with 1–8 whole hours per service. [ADR 0006](../adr/0006-phase-1-payment-direction.md) proposes a Stripe Connect platform charge at booking and a later worker transfer, with a nominal 20% platform and 80% worker split of the gross customer total. These are product proposals, not verified tax, invoice, merchant, or Stripe-account rules.
+Cleanzza now proposes a Comune di Ferrara pilot for Home Cleaning only. [ADR 0010](../adr/0010-ferrara-home-cleaning-pilot.md) records a proposed disclosed-intermediary model, 15% commission on a VAT-exclusive base, authorization before service, capture after a confirmed or supported outcome, and a later worker transfer. The EUR 25/hour `ferrara-demo-v1` rule is a synthetic example, not a final customer total. The earlier Milano/three-service, 20% gross split, and immediate-capture direction is historical. None of these proposals is verified tax, invoice, legal-supplier, or Stripe-account policy.
 
 ## Italian tax and legal review
 
@@ -21,6 +21,8 @@ Cleanzza proposes a Comune di Milano launch for Home Cleaning, Car Wash, and Pet
 | Invoice/receipt issuance, corrections, refunds, disputes, and retention | Pending |
 | Reviewed customer and worker terms, cancellation/refund notices, and consent text | Pending |
 | Italian employment/self-employment and marketplace obligations affecting this flow | Pending |
+| Standard professional eligibility and fiscal-treatment matrix, evidence list, and review policy | Pending |
+| Founder/operator registration, business and referral obligations | Pending |
 | Written conclusion, exceptions, and restricted memo reference | Pending |
 
 ## Stripe account review
@@ -31,10 +33,11 @@ Cleanzza proposes a Comune di Milano launch for Home Cleaning, Car Wash, and Pet
 | Approval or rejection of the proposed platform charge and separate transfer for these services and parties | Pending |
 | Merchant/funds-flow configuration, account capabilities, service agreement, country and transfer restrictions | Pending |
 | Checkout/SCA, capture proof, signed webhook events, duplicate and delayed-event behavior | Pending |
+| Manual-capture authorization lifetime, delayed-booking policy, and permitted capture timing | Pending |
 | Transfer and payout timing, restricted accounts, refunds, reversals, disputes, and reconciliation | Pending |
 | Controlled test-mode walkthrough and account-specific written response reference | Pending |
 
-## Other Phase 1 launch gates
+## Other later live-launch gates
 
 The payment review does not clear these separate gates:
 
@@ -48,6 +51,6 @@ The payment review does not clear these separate gates:
 
 ## Owner decision and implementation handoff
 
-**Current decision:** Hold real acceptance, order submission, payment, payout, and production identity collection. Draft quotes remain `acceptance_ready: false`; the existing order table permits `DRAFT` only.
+**Current decision:** Build and review the synthetic Phase 1 demo now. Hold real acceptance, order submission, payment, payout, fiscal issuance, and production identity/fiscal-evidence collection for a later live release. Draft quotes remain `acceptance_ready: false`; the existing order table permits `DRAFT` only.
 
-When written responses arrive, the Cleanzza owner records the response references, decision date, approvers, accepted assumptions, unresolved exceptions, and effective date here. If the proposed model changes, update ADRs 0004 and 0006, the product scope, relevant Trello cards, and the API/feature contracts before implementing acceptance. Implement and test the approved quote snapshot, order, payment, and payout path in dependency order, then complete staging and operational verification. Do not mark this gate cleared solely because this template exists or a local `.env` file has been populated.
+When written responses arrive, the Cleanzza owner records the response references, decision date, approvers, accepted assumptions, unresolved exceptions, and effective date here. If the proposed model changes, update ADR 0010, the product scope, relevant Trello cards, and the API/feature contracts before implementing real acceptance. Implement and test the approved quote snapshot, order, payment, and payout path in dependency order, then complete staging and operational verification. Do not mark this gate cleared solely because this template exists or a local `.env` file has been populated.

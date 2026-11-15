@@ -1,77 +1,17 @@
-# Phase 1 launch service catalog (B08)
+# Active Ferrara service catalog (B08)
 
 ## Purpose and scope
 
-The backend publishes one versioned, read-only catalog for the approved
-Milano launch. It contains Home Cleaning, Car Wash, and Pet Care only. The
-customer and worker browser can read the same API; the mobile `/services`
-page shows the choices and their essential inputs. There is no catalog editor,
-pricing, quote, or booking API in this original catalog slice. The later public
-draft price endpoint is documented in [pricing-quotes.md](pricing-quotes.md).
+`GET /catalog/launch` publishes the current read-only pilot catalog. Version `ferrara-v1` contains one area, `IT-FE-FERRARA`, and one service, `HOME_CLEANING`. The city is Ferrara, country `IT`, timezone `Europe/Rome`, and coarse inclusive CAP range `44121`–`44124`. The previous `milano-v1` catalog with three services is historical and is not served as the active launch catalog. [ADR 0010](../adr/0010-ferrara-home-cleaning-pilot.md) records the change.
 
-[ADR 0003](../adr/0003-phase-1-launch-services.md) sets the product rules.
-`milano-v1` is a stable identifier. Changing coverage, fields, or
-qualifications requires a new version; future accepted quotes and orders must
-retain the version they used.
+The response still includes the shared date, time, address, recipient, equipment/supplies, and whole-hour duration fields. Duration is 1–8 whole hours. Home Cleaning requires the room/parts description, positive room count, and beginner/professional preference. The worker must declare a level and obtain manual review. Car Wash and Pet Care are not active and cannot be newly quoted or saved as a draft request. The CAP gate is a coarse input check, not proof of an exact street's municipal location.
 
 ## API contract
 
-`GET /catalog/launch` is public and takes no path, query, headers, body,
-pagination, ordering, or filtering parameters. It returns `200` with the
-`LaunchCatalog` OpenAPI schema, `Cache-Control: public, max-age=300`, and the
-standard `X-Request-ID`. There are no domain error responses or authentication
-checks. Standard infrastructure errors may still occur.
+`GET /catalog/launch` is public, with no path, query, header, or body parameters, pagination, ordering, or authentication. It returns `200 LaunchCatalog`, `Cache-Control: public, max-age=300`, and `X-Request-ID`. Its area carries code/city/country/timezone/CAP bounds; its single service carries code/name/summary, required booking fields, qualification summary, `home_level_options`, certificate and manual-review flags. Infrastructure failures use the shared error envelope. The backend's active `is_supported_address` and `is_supported_service` functions reject Milano, other cities/CAPs, Car Wash, and Pet Care. The server repeats these checks for draft quotes and new draft requests.
 
-The response includes:
+This response changes the active version and removes two service choices from the previous API. It is a client compatibility change: the frontend pins the new OpenAPI export and must deploy with the backend. Historical `milano-v1` values remain in stored snapshots for reading, not for new submission. A future new market requires another version and migration rather than relabeling old records.
 
-- `version: "milano-v1"`.
-- One area: `IT-MI-MILANO`, city `Milano`, country `IT`, timezone
-  `Europe/Rome`, inclusive five-digit CAP range `20121`–`20162`.
-- Whole-hour duration from 1 through 8, step 1, for each selected service.
-  Multiple selected services reserve the sum of their durations in a future
-  booking flow.
-- Shared required fields: service date, start time, area code, street, house
-  number, city, postcode, and recipient type. A service for someone else also
-  requires recipient first name, last name, and phone.
-- Three service definitions with machine-readable required field names,
-  display name and summary, customer notes, worker qualification summary,
-  certificate requirement, and manual approval requirement.
+## Browser behavior and verification
 
-Home Cleaning requires room selection, a positive room count, and beginner or
-professional preference. A worker needs an approved Home Cleaning level; no
-certificate is required by ADR 0003. Car Wash requires make/model and an
-approved service certificate. Pet Care requires dog/cat species and breed and
-an approved service certificate. Every service also asks for hours and
-explicit equipment and supplies choices. Workers must be approved for the
-chosen service and area and able to bring requested items.
-
-The backend's `is_supported_service` and `is_supported_address` functions
-reject codes outside these three and city/CAP combinations outside the launch
-gate. The city comparison is case-insensitive after trimming. The CAP gate is
-coarse and does not prove that an exact street belongs to the municipality.
-The draft quote endpoint calls these checks within server-side validation; a
-frontend selection alone cannot authorize booking. There is currently no
-booking endpoint, so this catalog does not claim an end-to-end
-unsupported-booking rejection yet.
-
-## Browser behavior
-
-`/services` loads the catalog from the API and displays a mobile-width view
-on phones and desktops. It has loading, failure/retry, and ready states. It
-shows all three services and the Milano area, with a draft price preview and a
-clear message that booking is still forthcoming. Links from the customer and worker
-profile screens open the same view. The browser uses the generated TypeScript
-schema pinned to the backend OpenAPI export; it does not decide eligibility.
-
-## Verification and rollout
-
-The catalog is code configuration with no database migration or sensitive
-data. Backend tests assert the public response and accepted/rejected area and
-service values. Run `.venv/bin/pytest -q tests/test_launch_catalog.py`,
-`.venv/bin/ruff check .`, `.venv/bin/ruff format --check .`,
-`.venv/bin/mypy app scripts`, and
-`.venv/bin/python -m scripts.export_openapi --check` from `back/`.
-Frontend tests assert the typed public request; run `npm run lint`,
-`npm run format:check`, `npm run typecheck`, `npm test`,
-`npm run contract:check`, and `npm run build` from `front/`.
-The backend OpenAPI and frontend pinned contract must be updated together.
+`/services` renders the one service and Ferrara CAP range from the API. `/book` uses the same catalog. The UI shows that the example is a synthetic demo and does not promise a booking. Backend integration tests assert the current catalog, address boundary, inactive-service rejection, and historical-version retention. Run `PYTHONPATH=. pytest -q`, `ruff check .`, `ruff format --check .`, `mypy app scripts`, `alembic check`, and `python -m scripts.export_openapi --check` with the backend environment. Frontend checks are `npm test`, `npm run lint`, `npm run format:check`, `npm run typecheck`, `npm run contract:check`, and `npm run build`.

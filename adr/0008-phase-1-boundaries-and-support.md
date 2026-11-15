@@ -2,6 +2,8 @@
 
 **Status:** Product direction approved by the owner on 2026-10-20. Staffing, response commitments, and launch operations remain gated as described below.
 
+**Phase 1 application:** [ADR 0009](0009-phase-1-demo-target.md) makes Phase 1 a synthetic demo. The staffing and active-job promises below apply before a later live service launch; a demo support case makes no response promise.
+
 ## Included in Phase 1
 
 - Use the one card payment flow in [ADR 0006](0006-phase-1-payment-direction.md). A customer sees and accepts one reviewed total before booking; no automatic penalty or off-session charge is added.

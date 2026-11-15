@@ -8,9 +8,7 @@ purpose in PostgreSQL, verifies an uploaded object before marking it ready,
 and gives a [managed-MFA `ADMIN` reviewer](admin-reviewer-authentication.md)
 one-use, short-lived access with an audit event
 for each successful read. The worker sees only file status, never a durable raw
-download. The `/worker` browser screen offers certificate upload for Car
-Wash and Pet Care, a [work profile](worker-work-profile.md), and
-[live camera capture](worker-identity-evidence.md) for identity images.
+download. The `/worker` browser screen offers the active Ferrara Home Cleaning [work profile](worker-work-profile.md) and [live camera capture](worker-identity-evidence.md) for identity images. The historical Car Wash/Pet Care certificate upload UI is hidden for this pilot; the private API remains for existing records and later review.
 
 This is **not all of B06**. Service photos require an order and case model;
 correction documents require the verified-correction flow and its own retention
@@ -71,22 +69,7 @@ slice. Reviewer selection by worker and approved service belongs to B07.
 
 ## Mobile certificate upload
 
-On `/worker`, a signed-in worker selects Car Wash or Pet Care and a JPEG, PNG,
-or PDF certificate of at most 10 MiB. The mobile form hashes the file locally,
-requests a private ticket with the worker session and CSRF token, submits the
-returned form fields and file directly to storage, and finalizes with a random
-`Idempotency-Key`. It shows preparing, percentage upload progress, finalizing,
-success, and failure states. A retry after an interrupted storage transfer
-reuses the pending ticket; a retry after a lost finalization response uses the
-same file ID and idempotency key. An expired or missing upload gets a new
-ticket. Changing the service or file starts a new attempt. The browser does
-not receive a permanent read URL or store the file in local storage.
-
-The screen instructs workers to use only test files until the real-evidence
-policy is approved. Backend production collection remains disabled. The ready
-file ID can be linked to the matching Car Wash or Pet Care offering when the
-worker saves their [work profile](worker-work-profile.md). It does not claim
-live ID/selfie capture, which is documented under B04 separately.
+The earlier Car Wash/Pet Care certificate upload screen is not shown in the active Ferrara pilot. The private upload API still supports the historical purpose codes and retains its ownership, checksum, one-use reviewer access, and audit rules. New active work profiles accept Home Cleaning only and cannot link either certificate purpose. Do not collect real worker identity or fiscal evidence for the synthetic demo.
 
 ## Database, idempotency, and cleanup
 
