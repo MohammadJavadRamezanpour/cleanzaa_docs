@@ -2,7 +2,7 @@
 
 **Decision:** Phase 1 is a working, synthetic product demo, as recorded in [ADR 0009](adr/0009-phase-1-demo-target.md). It is not a public service launch. The Next.js frontend and FastAPI backend remain separate repositories.
 
-**Setting:** Example requests use Comune di Milano and the three catalogue services: Home Cleaning, Car Wash, and Pet Care. The EUR hourly amounts in [ADR 0004](adr/0004-phase-1-pricing-direction.md) are demo examples. Tax treatment is unknown. The nominal 20%/80% split in [ADR 0006](adr/0006-phase-1-payment-direction.md) may appear only as simulated accounting.
+**Setting:** Example requests use Comune di Ferrara and Home Cleaning only ([ADR 0010](adr/0010-ferrara-home-cleaning-pilot.md)). A versioned EUR 25/hour base and 15% split are synthetic fixtures, not approved customer totals, taxes, or worker net pay. Tax treatment remains unknown.
 
 **Support and feature boundary:** [ADR 0008](adr/0008-phase-1-boundaries-and-support.md) includes simple complaint/support cases and a human duty owner during active jobs. Cash, wallet, referral rewards, in-app emergency call, automatic penalties, and guaranteed live chat are deferred. A storage-only customer-referral attribution slice is included under the ADR 0008 amendment: it records who invited whom and pays nothing. Staffing and response arrangements remain a launch gate.
 
@@ -10,7 +10,7 @@
 
 A reviewer can complete the main story on a working website without a real phone number, worker identity document, card, or service appointment:
 
-1. Start as a synthetic customer, choose a launch service, enter an example Milano address and schedule, and see a versioned example price.
+1. Start as a synthetic customer, choose Home Cleaning, enter an example Ferrara address and schedule, and see a versioned example base price.
 2. Save and submit a demo request. The website records a retry-safe simulated payment outcome and shows the request in customer history. Cancelling a demo request produces a simulated refund outcome.
 3. Open a synthetic cleaner view. A preapproved example cleaner sees a privacy-limited offer, accepts it once, and then sees the example job details. Assignment and schedule conflicts are handled consistently in the demo.
 4. Move the job through Requested, Accepted, On the Way, In Progress, and Completed. The cleaner can simulate travel, check-in, Before/After evidence, and completion; the customer can see the status and confirm completion. Evidence is clearly fake or placeholder content, never a real home image or identity capture.
@@ -31,6 +31,6 @@ The companion local demo code covers customer demo sign-in, draft quote/request,
 
 ## Later live product
 
-The earlier customer and cleaner feature lists remain product ideas for a future release: verified phone onboarding, profile and terms activation, live cleaner identity/qualification approval, real service photos, staffed support, real booking, Stripe payment and payout, data rights, and operational launch. [ADRs 0002–0008](adr/) preserve those directions and their unresolved decisions. They do not block synthetic Phase 1 implementation.
+The earlier customer and cleaner feature lists remain product ideas for a future release: verified phone onboarding, professional fiscal-status declaration and reviewed eligibility, live identity/qualification approval, real service photos, staffed support, real booking, Stripe payment and payout, fiscal documents, referral rewards, data rights, and operational launch. [ADR 0010](adr/0010-ferrara-home-cleaning-pilot.md) supersedes the Milano/three-service and 20%/immediate-capture directions in ADRs 0003, 0004, and 0006. The earlier ADRs preserve their historical versions; their external approvals do not block synthetic Phase 1 implementation.
 
 Before any real customer request, worker dispatch, payment, payout, or identity collection is enabled, the owner must separately resolve the [tax, legal, Stripe, privacy, hosting, and support record](operations/phase-1-external-approval-record.md) and approve a live release plan. The demo does not imply those decisions have been made.

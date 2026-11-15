@@ -96,12 +96,11 @@ The page includes an **I need cleaning** option. After selecting it, the custome
 8. Indicate whether cleaning equipment or supplies are required.
 9. Start the search so the system can intelligently match the request with a cleaner.
 
-For the Phase 1 synthetic demo, the customer selects an example Milano address and a whole-hour
-duration of 1–8 hours for each selected service. Home Cleaning asks for the
-worker level, parts/rooms, and room count; Car Wash asks for car make/model;
-Pet Care asks for dog/cat and breed. Each service asks separately whether the
-worker must bring equipment and supplies. The full field and matching contract
-is in [ADR 0003](adr/0003-phase-1-launch-services.md).
+For the Phase 1 synthetic demo, the customer selects an example Ferrara address
+and 1–8 whole hours of Home Cleaning. The form asks for the worker level,
+parts/rooms, room count, and equipment/supplies choice. The current pilot
+boundary is in [ADR 0010](adr/0010-ferrara-home-cleaning-pilot.md); ADR 0003
+records the previous Milano catalogue.
 
 The full product description is a future product direction. The current
 [Phase 1 scope](phase_1_product_scope.md) is a synthetic demonstration; no
@@ -158,11 +157,10 @@ homeowner's photo consent remains active. See [ADR 0002](adr/0002-phase-1-person
 
 ## Payment
 
-For the first Milano release, [ADR 0004](adr/0004-phase-1-pricing-direction.md)
-sets EUR hourly customer-facing prices, free pre-start cancellation, no automatic
-no-show charge, and no repeat-worker surcharge in the first rule version. The
+For the Ferrara demo, [ADR 0010](adr/0010-ferrara-home-cleaning-pilot.md) uses a
+synthetic EUR example base and 15% split with fake payment outcomes. The
 broader payment and repeat-worker ideas below require later decisions before
-they can be enabled. Tax, commission, and payment flow remain launch gates.
+they can be enabled. Tax, final customer price, and real payment remain gated.
 
 After the work is complete, the customer must pay either online or in cash.
 

@@ -25,7 +25,7 @@ referrals, support chat, service evidence photos, and operational rules.
 
 ## 1.1 Specification status and unresolved product decisions
 
-**Demo setting:** Milano, Italy. ADR 0009 makes the Phase 1 deliverable a
+**Demo setting:** Ferrara, Italy, Home Cleaning only. ADRs 0009 and 0010 make the Phase 1 deliverable a
 synthetic product demo. A later live launch and any expansion require separate
 review of currency, operations, and applicable rules.
 
@@ -37,9 +37,9 @@ demo implementation under [ADR 0009](adr/0009-phase-1-demo-target.md):
 
 - applicable Italian and EU privacy, employment, marketplace, tax, and payment
   requirements; [ADR 0004](adr/0004-phase-1-pricing-direction.md) selects EUR
-- [ADR 0006](adr/0006-phase-1-payment-direction.md) selects Stripe Connect,
-  a platform charge and later worker transfer, no wallet or off-session debit,
-  and a nominal 20%/80% split; exact Italian account capabilities, provider
+- [ADR 0010](adr/0010-ferrara-home-cleaning-pilot.md) selects a proposed 15%
+  VAT-exclusive commercial commission and a later worker transfer after verified
+  capture, with no wallet or automatic extra charge; exact Italian account capabilities, provider
   contract, and legal merchant/funds-flow validation remain launch gates
 - the exact meaning of the EUR 10 cash-commission rule and authorization for
   any automatic debit before those deferred features are considered;
@@ -441,8 +441,9 @@ Before approval, the cleaner provides qualification and service information:
 -   home-cleaning experience level
 -   work experience and equipment/supplies needed by the approved service rules
 
-The Milano-only area choice, per-service qualifications, and booking fields are
-set by [ADR 0003](adr/0003-phase-1-launch-services.md). Separate birth details,
+The current Ferrara Home Cleaning area and qualification scope is set by
+[ADR 0010](adr/0010-ferrara-home-cleaning-pilot.md). ADR 0003 preserves the
+earlier Milano catalogue version. Separate birth details,
 residential address, employment/student
 status, psychological assessments, fiscal code, and bank details are deferred
 from Phase 1 onboarding until an approved legal or provider need requires them.

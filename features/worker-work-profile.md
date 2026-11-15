@@ -1,106 +1,15 @@
-# Worker services and work profile (B05)
+# Worker work profile (B05)
 
-## Purpose and implemented scope
+## Current Ferrara behavior
 
-A pending worker can save one structured work profile: the Milano service area,
-a short experience description, equipment and supplies declarations, and
-offered Home Cleaning, Car Wash, or Pet Care services. Home Cleaning stores a
-beginner or professional declaration. Car Wash and Pet Care may reference a
-ready private certificate file uploaded through B06. Matching can query these
-columns and rows without parsing free text. The catalogue identifier is
-`milano-v1`, aligned with [ADR 0003](../adr/0003-phase-1-launch-services.md).
+A pending worker may save a structured Home Cleaning work profile for `IT-FE-FERRARA`. They describe experience (10–1000 trimmed characters), choose whether they can bring equipment and supplies, and select beginner or professional level. The active catalog version is `ferrara-v1`. The worker UI offers only Home Cleaning and Ferrara. It shows a clear demo notice and does not promise eligibility for paid work. Car Wash and Pet Care were options in the historical Milano catalog; the backend now rejects them for new profile writes. Historical records remain readable and retain their original catalog version.
 
-This captures worker declarations, not approval. The separate
-[review decision flow](worker-review-decisions.md) checks identity and
-Car Wash/Pet Care evidence before setting `APPROVED`. `job_eligible` requires
-approval and current worker terms acceptance; no job matching or acceptance endpoint
-exists yet. The browser editor and certificate association are part of this B05
-delivery; private bytes and reviewer access remain governed by
-[private worker evidence](private-worker-evidence.md).
+`GET /cleaners/me/work-profile` requires a cleaner session and returns the owner profile, current or historical catalog version, nullable area and experience/equipment/supplies fields, and ordered offerings. It returns `200` with `Cache-Control: no-store`, or shared-envelope `401` invalid session, `403` wrong role, `404` missing cleaner, and `503` unavailable storage. A pending empty profile returns `services: []` and null optional fields. Historical offerings may include inactive service codes for display but cannot be newly submitted.
 
-## Mobile browser flow
+`PUT /cleaners/me/work-profile` requires the cleaner session and matching `X-CSRF-Token`. The body contains `service_area_code: "IT-FE-FERRARA"`, experience description, two boolean equipment/supplies choices, and one Home Cleaning offering with `home_level` beginner or professional and no certificate reference. Unknown fields, unsupported area/service, duplicate offerings, invalid level/length, and non-owner references fail with `422` or the documented shared error code. Non-pending profiles fail with `409`; invalid session/role/missing cleaner/unavailable storage use `401`/`403`/`404`/`503`. The service replaces the owner's offerings in one transaction and returns the saved profile. No client value establishes job eligibility; admin review remains separate.
 
-The `/worker` profile loads the current work profile with the legal-name
-profile. In the narrow mobile shell, the worker selects Milano, describes work
-experience, explicitly chooses yes/no for equipment and supplies, and selects
-one or more services. Home Cleaning exposes a beginner/professional level.
-Car Wash and Pet Care show whether a private certificate is attached. The
-certificate upload step returns a ready file ID and selects the corresponding
-service in the unsaved form; the worker then saves work details to link it.
-The form shows loading, validation, save-success, and error states. The file
-stays in memory only for the upload attempt and is not stored by the browser.
-Editing is disabled for a nonpending review state until B07 defines re-review.
+The storage schema retains historical Milano area and service rows to preserve old records. Migration `0017_ferrara_demo_catalog` widens the area check and does not rewrite existing work profiles. A new Ferrara save receives `ferrara-v1`; old Milano profiles must be re-entered for the active pilot. The backend sorts historical inactive offerings after Home Cleaning so old profiles can still be read.
 
-## API contract
+Real professional eligibility now additionally requires the adviser-approved fiscal and work-status matrix proposed in [ADR 0010](../adr/0010-ferrara-home-cleaning-pilot.md). The current demo profile and earlier identity/qualification review do **not** authorize real paid jobs. Do not collect real tax or identity evidence for the synthetic demo. The external approval record remains open.
 
-All responses use the shared error envelope and `X-Request-ID`. An authenticated
-`CLEANER` role and HTTP-only session cookie are required. `PUT` also requires
-an allowed `Origin` and `X-CSRF-Token`. These paths take no worker ID, query,
-pagination, ordering, or filtering parameters; ownership comes from the
-session.
-
-| Method and path | Request | Success | Errors |
-| --- | --- | --- | --- |
-| `GET /cleaners/me/work-profile` | Cookie only | `200` current work profile with `Cache-Control: no-store` | `401` invalid session, `403` no cleaner role, `404` missing cleaner, `503` database unavailable. Before first save, nullable fields are `null`, `services` is `[]`, and `catalog_version` is `milano-v1`. |
-| `PUT /cleaners/me/work-profile` | Cookie, CSRF, full JSON body below | `200` replacement profile with `Cache-Control: no-store` | `401`, `403` role/CSRF/Origin, `404` missing cleaner or certificate owned by another worker, `409` nonpending cleaner or certificate not ready, `422` invalid input or certificate purpose, `503` database unavailable. |
-
-Example `PUT` body:
-
-```json
-{
-  "service_area_code": "IT-MI-MILANO",
-  "experience_description": "I have worked with local households for three years.",
-  "can_bring_equipment": true,
-  "can_bring_supplies": false,
-  "services": [
-    {"service_code": "HOME_CLEANING", "home_level": "PROFESSIONAL"},
-    {"service_code": "CAR_WASH", "certificate_file_id": "<ready-owned-UUID>"}
-  ]
-}
-```
-
-The response adds `catalog_version: "milano-v1"` and returns every offering
-with `service_code`, nullable `home_level`, and nullable
-`certificate_file_id`, ordered Home Cleaning, Car Wash, Pet Care. The area code
-is exactly `IT-MI-MILANO`. Experience is trimmed and must contain 10–1000
-characters. Equipment and supplies fields are mandatory booleans. `services`
-contains one to three distinct codes from `HOME_CLEANING`, `CAR_WASH`, and
-`PET_CARE`. Home Cleaning requires `BEGINNER` or `PROFESSIONAL` and cannot
-reference a certificate. Car Wash and Pet Care cannot use `home_level` and
-may reference a certificate with the corresponding
-`CERTIFICATE_CAR_WASH`/`CERTIFICATE_PET_CARE` purpose. Unknown fields are
-rejected. A missing certificate is allowed while onboarding remains pending.
-
-`PUT` replaces the complete profile and offering list. A repeated identical
-request returns the same representation; no `Idempotency-Key` is needed for
-this value-setting command. Updating a nonpending cleaner returns `409` until
-B07 defines re-review transitions. Concurrent writes lock the cleaner row and
-serialize; the last successful full replacement wins. Profile data is private
-to the worker and authorized operations, with no public listing.
-
-## Storage, migration, and rollout
-
-Migration `0007_worker_work_profile` adds `cleaner_work_profiles` and
-`cleaner_offerings`; it does not rewrite existing cleaner rows. Database
-constraints enforce the one-area choice, service codes, Home Cleaning level,
-and certificate prohibition for Home Cleaning. The offering certificate UUID
-is a foreign key to B06 `stored_files`; the application validates ownership,
-`READY` state, and purpose in the same PostgreSQL transaction before linking.
-The referenced private bytes stay under B06 access and retention rules. A
-missing or pending file cannot be linked. Down migration deletes these worker
-declarations and must not be used after real onboarding without a data plan.
-
-The profile does not publish worker details or approve qualifications. B07 owns
-reviewer decisions and eligibility; B08 owns the shared catalog API and future
-version changes. Until real identity and certificate retention reviews are
-complete, use only synthetic evidence in development or controlled staging.
-
-From `back/`, run `.venv/bin/alembic upgrade head`, `.venv/bin/alembic check`,
-`.venv/bin/pytest -q`, `.venv/bin/ruff check .`,
-`.venv/bin/ruff format --check .`, `.venv/bin/mypy app scripts`,
-`.venv/bin/python -m scripts.export_openapi --check`, `.venv/bin/pip-audit`,
-and `docker build -t cleanzza-api:local .`. PostgreSQL integration tests cover
-profile replacement, duplicate services, Milano validation, role/CSRF checks,
-approval edit restrictions, and certificate ownership, readiness, and purpose.
-The frontend pins the generated OpenAPI contract and runs lint, format,
-typecheck, tests, contract check, and production build in CI.
+PostgreSQL tests cover owner access, CSRF, save/replace, inactive service rejection, review eligibility, and profile history. Run the canonical backend checks from [the catalog feature](launch-service-catalog.md) and frontend lint, type, contract, test, format, and build checks.

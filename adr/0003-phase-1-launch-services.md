@@ -3,6 +3,8 @@
 **Status:** Approved product direction, 2026-10-18. The launch catalogue is
 deliberately small and may change through a new version.
 
+**Superseded for the active Phase 1 demo by [ADR 0010](0010-ferrara-home-cleaning-pilot.md).** The Milano area and Car Wash/Pet Care remain historical scope only.
+
 ## Decision
 
 ### Launch coverage
