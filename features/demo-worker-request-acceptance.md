@@ -1,0 +1,22 @@
+# Synthetic worker request inbox and acceptance
+
+## Purpose and scope
+
+In the controlled Ferrara demo, a signed-in worker can open `/worker/requests`, see synthetic Home Cleaning requests, and accept one. This adds a worker step to the [Phase 1 demo story](../phase_1_product_scope.md). It does not establish real professional eligibility, dispatch a worker, reserve real availability, or change the underlying order from `DRAFT`. The displayed amount is an example base before tax; fake capture remains separate from real funds.
+
+## API and access
+
+- `GET /demo/worker/requests` requires a session with the `CLEANER` role. It returns `{"items":[...]}` with at most 50 requests ordered by scheduled start and order ID. Each item has `order_id`, `status` (`REQUESTED` or `ACCEPTED`), `service_code` (`HOME_CLEANING`), `city` (`Ferrara`), offset-aware `scheduled_start`/`scheduled_end`, decimal-string `example_total`, and nullable `accepted_at`. The list includes future open requests and this worker's accepted requests. It exposes no street, house number, recipient name, or phone. It returns `401` without a session, `403` for a customer-only session, and `503` when the demo flag is off.
+- `POST /demo/worker/requests/{order_id}/accept` requires the `CLEANER` session, a valid `X-CSRF-Token`, and an `Idempotency-Key` of 1–128 characters matching the existing retry-key pattern. It returns the accepted item with `status: ACCEPTED`. A retry by the same worker with the same key returns the same result. A missing request returns `404`; an unavailable, cancelled, past-start, already accepted, or schedule-overlapping request returns `409`. Missing/invalid headers return `422`; role/CSRF failures return `401`/`403`; disabled demo returns `503`. The API uses the standard error envelope and `Cache-Control: no-store`.
+
+The backend owns this state. A PostgreSQL row lock permits only one accepting worker per request. A per-worker transaction advisory lock serializes that worker's accept attempts; overlapping accepted time windows are rejected. A `(worker_id, accept_key)` unique constraint prevents reuse of one key across requests. Any demo worker account can try the synthetic queue, regardless of pending real-world review status. This is a demo permission only; real work still requires approved eligibility and matching.
+
+## Persistence and customer view
+
+Migration `0018_demo_worker_acceptance` adds nullable accepted worker user ID, acceptance timestamp, and retry key to `demo_bookings`. Its check constraint permits `REQUESTED`, `ACCEPTED`, and `CANCELLED` only with matching fake payment and timestamp fields. Existing requests keep their prior state and become visible in the queue if their start is still future. Downgrade refuses to remove an accepted worker record. The customer history and detail APIs show `ACCEPTED` and `accepted_at` on the synthetic booking; the customer can still simulate cancellation before the scheduled start. Cancelled requests leave the worker inbox. No real order event, transfer, payout, or message is created.
+
+The frontend worker page links to the demo inbox after worker sign-in. The inbox can be refreshed manually and confirms acceptance without claiming a real job. The worker login uses the on-screen demo code; no SMS is sent. Use synthetic addresses and identities only. The host preview remains access controlled, and the backend rejects the demo flag in production.
+
+## Verification
+
+Run the backend PostgreSQL tests, `alembic upgrade head`, `alembic check`, Ruff, mypy, and OpenAPI export check. The integration tests cover worker role access, a privacy-limited queue, retry, competing workers, overlapping schedules, customer status, and cancellation. Regenerate the frontend pinned OpenAPI client, then run its API tests, lint, typecheck, contract check, format check, and production build with demo flags. Verify staging shows the same request to the worker and customer without real dispatch.
