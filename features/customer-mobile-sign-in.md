@@ -9,6 +9,9 @@ uses the backend's B03 API and pins the exported OpenAPI document at
 `front/contracts/openapi.json`; generated TypeScript types live at
 `front/lib/api/generated/schema.ts`.
 
+The screen also hosts the invite card described in
+[customer referrals](customer-referrals.md): a signed-in customer sees their
+permanent link, a copy action, and the number of friends who joined through it.
 The screen does not offer booking, payment, address search, phone changes, or
 account deletion. Booking remains a later feature. An active profile says it
 is ready while making clear that booking is not yet available.
@@ -33,6 +36,17 @@ for the current version. If terms are unavailable (`503`), the customer may
 save details but cannot accept terms or become active. A stale-version `409`
 reloads the current terms and asks the customer to review again.
 
+A customer who opens `/join/<CODE>` has the code stored in a first-party
+cookie for 30 days and is redirected to this sign-in screen. The capture is
+silent: the phone and code forms are unchanged, the stored code is sent as
+`referral_code` on the verify call, and it is cleared after a successful
+verification. An unreadable or malformed code is discarded without an error.
+
+The signed-in profile view reads `GET /customers/me/referral`, shows the
+customer's link as `<origin>/join/<CODE>` with a copy button, and displays the
+returned `invited_count`. A failed referral read never blocks the profile
+screen.
+
 The sign-out action calls `POST /auth/logout` and returns to phone sign-in.
 Loading, validation, network failure, rate-limit, and expired-session states
 are visible. Form inputs have labels; feedback uses alert or status regions.
@@ -41,10 +55,14 @@ are visible. Form inputs have labels; feedback uses alert or status regions.
 
 Every API call uses `credentials: include` and `cache: no-store`. The
 HTTP-only session cookie is never read by JavaScript. Mutations send the CSRF
-token returned by the session or verification endpoint. The frontend holds
+token returned by the session or verification endpoint. The referral capture
+uses a separate first-party cookie that holds only the public invite code; it is
+not a credential, and it is deleted on the client after a successful
+verification. The frontend holds
 that token only in component memory. Profile data is sent only to the
 configured backend origin. No phone number, code, token, name, or address is
-written to application logs or browser storage.
+written to application logs or browser storage, and the referral cookie contains
+no visitor identifier.
 
 The backend still owns role, ownership, terms, and booking eligibility checks.
 The configured `NEXT_PUBLIC_API_BASE_URL` must be an HTTPS origin outside local

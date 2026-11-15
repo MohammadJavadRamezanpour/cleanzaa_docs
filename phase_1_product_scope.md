@@ -4,6 +4,8 @@
 
 **Setting:** Example requests use Comune di Milano and the three catalogue services: Home Cleaning, Car Wash, and Pet Care. The EUR hourly amounts in [ADR 0004](adr/0004-phase-1-pricing-direction.md) are demo examples. Tax treatment is unknown. The nominal 20%/80% split in [ADR 0006](adr/0006-phase-1-payment-direction.md) may appear only as simulated accounting.
 
+**Support and feature boundary:** [ADR 0008](adr/0008-phase-1-boundaries-and-support.md) includes simple complaint/support cases and a human duty owner during active jobs. Cash, wallet, referral rewards, in-app emergency call, automatic penalties, and guaranteed live chat are deferred. A storage-only customer-referral attribution slice is included under the ADR 0008 amendment: it records who invited whom and pays nothing. Staffing and response arrangements remain a launch gate.
+
 ## Demo success criteria
 
 A reviewer can complete the main story on a working website without a real phone number, worker identity document, card, or service appointment:
