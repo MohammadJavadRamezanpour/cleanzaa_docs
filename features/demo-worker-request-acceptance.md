@@ -20,3 +20,5 @@ The frontend worker page links to the demo inbox after worker sign-in. The inbox
 ## Verification
 
 Run the backend PostgreSQL tests, `alembic upgrade head`, `alembic check`, Ruff, mypy, and OpenAPI export check. The integration tests cover worker role access, a privacy-limited queue, retry, competing workers, overlapping schedules, customer status, and cancellation. Regenerate the frontend pinned OpenAPI client, then run its API and deck tests, lint, typecheck, contract check, format check, and production build with demo flags. Verify staging shows one open card at a time, that skip and undo affect only the browser view, and that server-confirmed acceptance advances the deck without real dispatch.
+
+A customer request with a [selected worker and rate](worker-pricing-levels.md) appears only in that worker’s inbox. Other workers receive 404 on direct acceptance attempts. Untargeted requests use the shared demo queue.
