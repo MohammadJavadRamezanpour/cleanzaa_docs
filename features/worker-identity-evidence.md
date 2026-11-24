@@ -78,3 +78,5 @@ build; frontend checks are lint, format, typecheck, tests, contract check, and
 production build. PostgreSQL tests cover ownership, READY/purpose checks,
 partial/complete status, CSRF, and pending-only editing. A real device camera
 and configured private store still need staging verification before release.
+
+The protected worker preview uses the separate [sample-document verification flow](worker-document-verification.md). It does not use the camera-capture or private-file APIs documented here.

@@ -21,3 +21,5 @@ Worker onboarding requires a pricing level and EUR hourly rate after phone verif
 All pricing is synthetic in the hosted demo. The existing fake-payment flow and demo commission apply. The migration adds nullable pricing columns without assigning a rate to existing workers. Deploy the API first. Verify with PostgreSQL migration and integration tests, OpenAPI export, frontend generated-client checks, and a hosted synthetic request using a selected worker.
 
 See [versioned quote pricing](pricing-quotes.md) and [synthetic worker request acceptance](demo-worker-request-acceptance.md).
+
+With [worker verification](worker-document-verification.md) enabled, the directory and targeted estimates require approved verification in the Ferrara service area as well as a valid price.
