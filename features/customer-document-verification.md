@@ -8,6 +8,8 @@ Customers can browse, receive estimates, and save a draft while verification is 
 
 A completed attachment set enters **Pending Review**. Reviewers use the **Customers** queue in `/admin/verification` and decide each pending document. The customer sees **Rejected – Resubmission Required** with a reason for each rejected item on revisit, refresh, or the next visible-page poll. A replacement preserves approvals for unchanged attachments. Changing identity type, VAT answer, or sample municipality requires a full set. A pending or approved submission is read-only. Notices are delivered in the customer account.
 
+The shared verification form presents one step at a time and shows progress and a review screen. Customers can move back without losing their selections on the page. On a replacement, the form opens directly on the rejected attachments and offers a separate action to edit document details.
+
 ## API
 
 - `GET /customers/me/verification` returns the current owner snapshot. The customer session must have the `CUSTOMER` role. With no submission the response has `revision: 0`, `status: NOT_SUBMITTED`, and `can_book: false`.

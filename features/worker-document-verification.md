@@ -9,6 +9,8 @@ Workers attach practice samples after phone verification and pricing selection. 
 
 The upload controls accept only the downloadable Cleanzza practice images, checked locally by their content fingerprints. Workers may also attach those same fixtures directly from the form. Only fixture identifiers reach the API. No real file, file name, image bytes, identity number, face data, or residential address is collected. Reviewers can inspect the fixtures and record individual decisions. Unreadable or expired fixtures cannot be approved. This models manual verification and does not establish legal eligibility, real document validity, or biometric identity.
 
+Workers complete the guided form one step at a time, with a progress indicator and a final attachment review. The form adds permit sides and a VAT document only when selected. Replacements open directly on the rejected attachments, and **Edit document details** allows changes to the identity type, VAT answer, or municipality. Back and Continue preserve current selections until the page is left.
+
 ## Status and resubmission
 
 A complete set enters **Pending Review**. An authorized reviewer records a decision on every pending attachment. All attachments must be approved before the packet becomes **Approved**. A rejection displays **Rejected – Resubmission Required** and the reason beside each rejected document. The worker sees the notification on revisit, refresh, or the next 20-second update while the pending status is visible. The preview sends no SMS or email.
