@@ -12,9 +12,10 @@ uses the backend's B03 API and pins the exported OpenAPI document at
 The screen also hosts the invite card described in
 [customer referrals](customer-referrals.md): a signed-in customer sees their
 permanent link, a copy action, and the number of friends who joined through it.
-The screen does not offer booking, payment, address search, phone changes, or
-account deletion. Booking remains a later feature. An active profile says it
-is ready while making clear that booking is not yet available.
+The profile gives customers shortcuts to the Ferrara service catalog and their
+saved drafts. The controlled preview also offers a simulated booking journey.
+Live booking, payment, address search, phone changes, and account deletion are
+outside the profile's scope.
 
 ## Behavior
 
@@ -47,6 +48,13 @@ customer's link as `<origin>/join/<CODE>` with a copy button, and displays the
 returned `invited_count`. A failed referral read never blocks the profile
 screen.
 
+The customer actions sit directly under the account status, before the profile
+forms. **Plan a test booking** leads to `/book` and is the primary action when
+the existing booking preview gate is enabled. **Explore services** leads to
+`/services`, and **Draft history** leads to `/orders`. Both are available in
+the signed-in view even when the booking preview is disabled. The destination
+pages and API continue to apply their existing account and verification rules.
+
 The sign-out action calls `POST /auth/logout` and returns to phone sign-in.
 Loading, validation, network failure, rate-limit, and expired-session states
 are visible. Form inputs have labels; feedback uses alert or status regions.
@@ -78,3 +86,8 @@ From `front/`, run `npm ci`, `npm run lint`, `npm run format:check`,
 credentialed and CSRF-protected profile writes, and rate-limit responses.
 The pinned contract came from backend B03 OpenAPI export and generated types
 are checked in CI.
+
+In a signed-in browser session, verify that the three actions appear directly
+under the account status with the preview enabled, precede the profile form
+in keyboard order, and open their respective pages. With the booking preview
+disabled, verify that the services and draft history actions are still present.
